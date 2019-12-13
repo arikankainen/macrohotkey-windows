@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -106,8 +107,6 @@ namespace MacroHotkey
         {
             if (editMode) labelName.Text = "Edit macro";
             else labelName.Text = "New macro";
-
-            this.Height = 400;
         }
 
         private void FormAddHotkey_Shown(object sender, EventArgs e)
@@ -190,11 +189,6 @@ namespace MacroHotkey
 
         private void FormAddHotkey_HelpButtonClicked(object sender, CancelEventArgs e)
         {
-            FormAddHotkeyHelp form = new FormAddHotkeyHelp();
-            form.Left = this.Right + 100;
-            form.Top = this.Top;
-            form.Show();
-            e.Cancel = true;
         }
 
         private void timerMouse_Tick(object sender, EventArgs e)
@@ -210,18 +204,24 @@ namespace MacroHotkey
 
         private void btnAction_Click(object sender, EventArgs e)
         {
-            //contextMenuAction.Show(btnAction, new Point(0, btnAction.Height));
             contextMenuAction.Show(btnAction, new Point(-contextMenuAction.Width - 5, 0));
+            contextMenuAction.Show(btnAction, new Point(-contextMenuAction.Width - 9, -contextMenuAction.Height + btnAction.Height));
         }
 
         private void mouseClickLeftToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddText("MouseClick(Left)");
+            
         }
 
         private void mouseClickRightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddText("MouseClick(Right)");
+        }
+
+        private void mouseClickMiddleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddText("MouseClick(Middle)");
         }
 
         private void mouseMoveMonitor1ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -248,7 +248,7 @@ namespace MacroHotkey
         {
             FormGetMouseLocation form = new FormGetMouseLocation();
             form.ShowDialog();
-            AddText("MouseLocation(" + form.Position.X.ToString() + "," + form.Position.Y.ToString() + ")");
+            AddText("MousePosition(" + form.Position.X.ToString() + "," + form.Position.Y.ToString() + ")");
         }
 
         private void keyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -298,10 +298,21 @@ namespace MacroHotkey
 
         private void AddText(string text, int pos)
         {
+            if (pos == 0) text += Environment.NewLine;
             var selectionIndex = txtAction.SelectionStart;
             txtAction.Text = txtAction.Text.Insert(selectionIndex, text);
             txtAction.SelectionStart = selectionIndex + text.Length - pos;
             txtAction.Focus();
+        }
+
+        private void keyHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx");
+        }
+
+        private void contextMenuAction_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            //e.Cancel = true;
         }
     }
 }

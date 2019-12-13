@@ -9,22 +9,22 @@ namespace MacroHotkey
     {
         private void SaveSettings()
         {
-            if (this.Width > 0) settings.SaveSetting("Width", this.Width.ToString());
-            if (this.Height > 0) settings.SaveSetting("Height", this.Height.ToString());
-            settings.SaveSetting("ColumnNameWidth", clmName.Width.ToString());
-            settings.SaveSetting("ColumnHotkeyWidth", clmHotkey.Width.ToString());
-            settings.SaveSetting("ColumnActionWidth", clmAction.Width.ToString());
-            settings.SaveSetting("HotkeysActive", checkActive.Checked.ToString());
+            if (this.Width >= this.MinimumSize.Width) settings.SaveSetting("Width", this.Width.ToString());
+            if (this.Height >= this.MinimumSize.Height) settings.SaveSetting("Height", this.Height.ToString());
+            settings.SaveSetting("ColumnNameWidth", ClmName.Width.ToString());
+            settings.SaveSetting("ColumnHotkeyWidth", ClmHotkey.Width.ToString());
+            settings.SaveSetting("ColumnActionWidth", ClmAction.Width.ToString());
+            settings.SaveSetting("HotkeysActive", CheckActive.Checked.ToString());
         }
 
         private void LoadSettings()
         {
             this.Width = settings.LoadSetting("Width", "int", "600");
             this.Height = settings.LoadSetting("Height", "int", "400");
-            clmName.Width = settings.LoadSetting("ColumnNameWidth", "int", "150");
-            clmHotkey.Width = settings.LoadSetting("ColumnHotkeyWidth", "int", "105");
-            clmAction.Width = settings.LoadSetting("ColumnActionWidth", "int", "250");
-            checkActive.Checked = settings.LoadSetting("HotkeysActive", "bool", "true");
+            ClmName.Width = settings.LoadSetting("ColumnNameWidth", "int", "150");
+            ClmHotkey.Width = settings.LoadSetting("ColumnHotkeyWidth", "int", "105");
+            ClmAction.Width = settings.LoadSetting("ColumnActionWidth", "int", "250");
+            CheckActive.Checked = settings.LoadSetting("HotkeysActive", "bool", "true");
         }
 
         private void SaveList()
@@ -33,13 +33,13 @@ namespace MacroHotkey
             {
                 using (StreamWriter sw = new StreamWriter(listFile))
                 {
-                    if (lstActions.Items.Count > 0)
+                    if (LstActions.Items.Count > 0)
                     {
-                        foreach (ListViewItem item in lstActions.Items)
+                        foreach (ListViewItem item in LstActions.Items)
                         {
-                            string name = item.SubItems[LIST_NAME].Text;
-                            string hotkey = item.SubItems[LIST_HOTKEY].Text;
-                            string action = item.SubItems[LIST_ACTION].Text;
+                            string name = item.SubItems[LIST_NAME].Text.Replace("|", "");
+                            string hotkey = item.SubItems[LIST_HOTKEY].Text.Replace("|", "");
+                            string action = item.SubItems[LIST_ACTION].Text.Replace("|", "");
                             string str = name + "|" + hotkey + "|" + action;
 
                             sw.WriteLine(str);
@@ -55,13 +55,13 @@ namespace MacroHotkey
         {
             try
             {
-                lstActions.Items.Clear();
+                LstActions.Items.Clear();
 
                 if (File.Exists(listFile))
                 {
                     using (StreamReader reader = File.OpenText(listFile))
                     {
-                        lstActions.BeginUpdate();
+                        LstActions.BeginUpdate();
 
                         while (reader.Peek() >= 0)
                         {
@@ -72,10 +72,10 @@ namespace MacroHotkey
                             item.SubItems.Add(list[LIST_HOTKEY]);
                             item.SubItems.Add(list[LIST_ACTION]);
 
-                            lstActions.Items.Add(item);
+                            LstActions.Items.Add(item);
                         }
 
-                        lstActions.EndUpdate();
+                        LstActions.EndUpdate();
                     }
                 }
             }

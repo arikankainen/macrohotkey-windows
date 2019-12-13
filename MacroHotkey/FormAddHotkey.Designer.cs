@@ -46,25 +46,27 @@
             this.timerMouse = new System.Windows.Forms.Timer(this.components);
             this.btnAction = new System.Windows.Forms.Button();
             this.contextMenuAction = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mouseClickLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mouseClickRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mouseLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mouseMoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mouseMoveMonitorPrimaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mouseMoveMonitor1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mouseMoveMonitor2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mouseMoveMonitorPrimaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.mouseMoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mouseLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mouseClickLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mouseClickMiddleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mouseClickRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.keyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keyControlCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keyShiftCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keyAltCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.keyHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.delayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.delay500ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.delay1000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.delay2000ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.delayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.keyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelTop.SuspendLayout();
             this.contextMenuAction.SuspendLayout();
             this.SuspendLayout();
@@ -94,7 +96,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(302, 425);
+            this.btnOk.Location = new System.Drawing.Point(302, 591);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 22;
@@ -106,7 +108,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(383, 425);
+            this.btnCancel.Location = new System.Drawing.Point(383, 591);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 21;
@@ -130,7 +132,7 @@
             this.labelLineBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelLineBottom.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.labelLineBottom.Location = new System.Drawing.Point(-1, 410);
+            this.labelLineBottom.Location = new System.Drawing.Point(-1, 576);
             this.labelLineBottom.Name = "labelLineBottom";
             this.labelLineBottom.Size = new System.Drawing.Size(486, 2);
             this.labelLineBottom.TabIndex = 26;
@@ -178,7 +180,7 @@
             this.txtAction.Multiline = true;
             this.txtAction.Name = "txtAction";
             this.txtAction.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAction.Size = new System.Drawing.Size(363, 249);
+            this.txtAction.Size = new System.Drawing.Size(363, 415);
             this.txtAction.TabIndex = 2;
             // 
             // txtName
@@ -203,7 +205,7 @@
             // 
             this.labelMouse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelMouse.AutoSize = true;
-            this.labelMouse.Location = new System.Drawing.Point(26, 430);
+            this.labelMouse.Location = new System.Drawing.Point(26, 596);
             this.labelMouse.Name = "labelMouse";
             this.labelMouse.Size = new System.Drawing.Size(123, 13);
             this.labelMouse.TabIndex = 32;
@@ -218,7 +220,7 @@
             // 
             this.btnAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAction.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAction.Location = new System.Drawing.Point(56, 357);
+            this.btnAction.Location = new System.Drawing.Point(56, 523);
             this.btnAction.Name = "btnAction";
             this.btnAction.Size = new System.Drawing.Size(30, 30);
             this.btnAction.TabIndex = 33;
@@ -228,39 +230,109 @@
             // 
             // contextMenuAction
             // 
+            this.contextMenuAction.DropShadowEnabled = false;
             this.contextMenuAction.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mouseClickLeftToolStripMenuItem,
-            this.mouseClickRightToolStripMenuItem,
-            this.toolStripMenuItem1,
+            this.mouseLocationToolStripMenuItem,
+            this.mouseMoveToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.mouseMoveMonitorPrimaryToolStripMenuItem,
             this.mouseMoveMonitor1ToolStripMenuItem,
             this.mouseMoveMonitor2ToolStripMenuItem,
-            this.mouseMoveMonitorPrimaryToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.mouseMoveToolStripMenuItem,
-            this.mouseLocationToolStripMenuItem,
-            this.toolStripMenuItem3,
+            this.mouseClickLeftToolStripMenuItem,
+            this.mouseClickMiddleToolStripMenuItem,
+            this.mouseClickRightToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.keyToolStripMenuItem,
             this.keyControlCToolStripMenuItem,
             this.keyShiftCToolStripMenuItem,
             this.keyAltCToolStripMenuItem,
+            this.keyHelpToolStripMenuItem,
             this.toolStripMenuItem4,
             this.delayToolStripMenuItem,
             this.delay500ToolStripMenuItem,
             this.delay1000ToolStripMenuItem,
             this.delay2000ToolStripMenuItem});
             this.contextMenuAction.Name = "contextMenuAction";
-            this.contextMenuAction.Size = new System.Drawing.Size(233, 358);
+            this.contextMenuAction.Size = new System.Drawing.Size(233, 424);
+            this.contextMenuAction.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.contextMenuAction_Closing);
+            // 
+            // mouseLocationToolStripMenuItem
+            // 
+            this.mouseLocationToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseLocationToolStripMenuItem.Image")));
+            this.mouseLocationToolStripMenuItem.Name = "mouseLocationToolStripMenuItem";
+            this.mouseLocationToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mouseLocationToolStripMenuItem.Text = "MousePosition(x,y)";
+            this.mouseLocationToolStripMenuItem.ToolTipText = "Move mouse to location X , Y";
+            this.mouseLocationToolStripMenuItem.Click += new System.EventHandler(this.mouseLocationToolStripMenuItem_Click);
+            // 
+            // mouseMoveToolStripMenuItem
+            // 
+            this.mouseMoveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseMoveToolStripMenuItem.Image")));
+            this.mouseMoveToolStripMenuItem.Name = "mouseMoveToolStripMenuItem";
+            this.mouseMoveToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mouseMoveToolStripMenuItem.Text = "MouseMove(x,y)";
+            this.mouseMoveToolStripMenuItem.ToolTipText = "Move mouse X pixels right, Y pixels down (negative values can be used)";
+            this.mouseMoveToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(229, 6);
+            // 
+            // mouseMoveMonitorPrimaryToolStripMenuItem
+            // 
+            this.mouseMoveMonitorPrimaryToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseMoveMonitorPrimaryToolStripMenuItem.Image")));
+            this.mouseMoveMonitorPrimaryToolStripMenuItem.Name = "mouseMoveMonitorPrimaryToolStripMenuItem";
+            this.mouseMoveMonitorPrimaryToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mouseMoveMonitorPrimaryToolStripMenuItem.Text = "MouseMoveMonitor(Primary)";
+            this.mouseMoveMonitorPrimaryToolStripMenuItem.ToolTipText = "Move mouse to primary monitor, upper left corner";
+            this.mouseMoveMonitorPrimaryToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveMonitorPrimaryToolStripMenuItem_Click);
+            // 
+            // mouseMoveMonitor1ToolStripMenuItem
+            // 
+            this.mouseMoveMonitor1ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseMoveMonitor1ToolStripMenuItem.Image")));
+            this.mouseMoveMonitor1ToolStripMenuItem.Name = "mouseMoveMonitor1ToolStripMenuItem";
+            this.mouseMoveMonitor1ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mouseMoveMonitor1ToolStripMenuItem.Text = "MouseMoveMonitor(1)";
+            this.mouseMoveMonitor1ToolStripMenuItem.ToolTipText = "Move mouse to monitor 1, upper left corner";
+            this.mouseMoveMonitor1ToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveMonitor1ToolStripMenuItem_Click);
+            // 
+            // mouseMoveMonitor2ToolStripMenuItem
+            // 
+            this.mouseMoveMonitor2ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseMoveMonitor2ToolStripMenuItem.Image")));
+            this.mouseMoveMonitor2ToolStripMenuItem.Name = "mouseMoveMonitor2ToolStripMenuItem";
+            this.mouseMoveMonitor2ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mouseMoveMonitor2ToolStripMenuItem.Text = "MouseMoveMonitor(2)";
+            this.mouseMoveMonitor2ToolStripMenuItem.ToolTipText = "Move mouse to monitor 2, upper left corner";
+            this.mouseMoveMonitor2ToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveMonitor2ToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(229, 6);
             // 
             // mouseClickLeftToolStripMenuItem
             // 
+            this.mouseClickLeftToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseClickLeftToolStripMenuItem.Image")));
             this.mouseClickLeftToolStripMenuItem.Name = "mouseClickLeftToolStripMenuItem";
             this.mouseClickLeftToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.mouseClickLeftToolStripMenuItem.Text = "MouseClick(Left)";
             this.mouseClickLeftToolStripMenuItem.ToolTipText = "Left mouse click";
             this.mouseClickLeftToolStripMenuItem.Click += new System.EventHandler(this.mouseClickLeftToolStripMenuItem_Click);
             // 
+            // mouseClickMiddleToolStripMenuItem
+            // 
+            this.mouseClickMiddleToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseClickMiddleToolStripMenuItem.Image")));
+            this.mouseClickMiddleToolStripMenuItem.Name = "mouseClickMiddleToolStripMenuItem";
+            this.mouseClickMiddleToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.mouseClickMiddleToolStripMenuItem.Text = "MouseClick(Middle)";
+            this.mouseClickMiddleToolStripMenuItem.ToolTipText = "Middle mouse click";
+            this.mouseClickMiddleToolStripMenuItem.Click += new System.EventHandler(this.mouseClickMiddleToolStripMenuItem_Click);
+            // 
             // mouseClickRightToolStripMenuItem
             // 
+            this.mouseClickRightToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("mouseClickRightToolStripMenuItem.Image")));
             this.mouseClickRightToolStripMenuItem.Name = "mouseClickRightToolStripMenuItem";
             this.mouseClickRightToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.mouseClickRightToolStripMenuItem.Text = "MouseClick(Right)";
@@ -272,58 +344,18 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(229, 6);
             // 
-            // mouseMoveMonitor1ToolStripMenuItem
+            // keyToolStripMenuItem
             // 
-            this.mouseMoveMonitor1ToolStripMenuItem.Name = "mouseMoveMonitor1ToolStripMenuItem";
-            this.mouseMoveMonitor1ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.mouseMoveMonitor1ToolStripMenuItem.Text = "MouseMoveMonitor(1)";
-            this.mouseMoveMonitor1ToolStripMenuItem.ToolTipText = "Move mouse to monitor 1, upper left corner";
-            this.mouseMoveMonitor1ToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveMonitor1ToolStripMenuItem_Click);
-            // 
-            // mouseMoveMonitor2ToolStripMenuItem
-            // 
-            this.mouseMoveMonitor2ToolStripMenuItem.Name = "mouseMoveMonitor2ToolStripMenuItem";
-            this.mouseMoveMonitor2ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.mouseMoveMonitor2ToolStripMenuItem.Text = "MouseMoveMonitor(2)";
-            this.mouseMoveMonitor2ToolStripMenuItem.ToolTipText = "Move mouse to monitor 2, upper left corner";
-            this.mouseMoveMonitor2ToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveMonitor2ToolStripMenuItem_Click);
-            // 
-            // mouseMoveMonitorPrimaryToolStripMenuItem
-            // 
-            this.mouseMoveMonitorPrimaryToolStripMenuItem.Name = "mouseMoveMonitorPrimaryToolStripMenuItem";
-            this.mouseMoveMonitorPrimaryToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.mouseMoveMonitorPrimaryToolStripMenuItem.Text = "MouseMoveMonitor(Primary)";
-            this.mouseMoveMonitorPrimaryToolStripMenuItem.ToolTipText = "Move mouse to primary monitor, upper left corner";
-            this.mouseMoveMonitorPrimaryToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveMonitorPrimaryToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(229, 6);
-            // 
-            // mouseMoveToolStripMenuItem
-            // 
-            this.mouseMoveToolStripMenuItem.Name = "mouseMoveToolStripMenuItem";
-            this.mouseMoveToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.mouseMoveToolStripMenuItem.Text = "MouseMove(X,Y)";
-            this.mouseMoveToolStripMenuItem.ToolTipText = "Move mouse X pixels right, Y pixels down (negative pixels can be used)";
-            this.mouseMoveToolStripMenuItem.Click += new System.EventHandler(this.mouseMoveToolStripMenuItem_Click);
-            // 
-            // mouseLocationToolStripMenuItem
-            // 
-            this.mouseLocationToolStripMenuItem.Name = "mouseLocationToolStripMenuItem";
-            this.mouseLocationToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.mouseLocationToolStripMenuItem.Text = "MouseLocation(X,Y)";
-            this.mouseLocationToolStripMenuItem.ToolTipText = "Move mouse to location X , Y";
-            this.mouseLocationToolStripMenuItem.Click += new System.EventHandler(this.mouseLocationToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(229, 6);
+            this.keyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("keyToolStripMenuItem.Image")));
+            this.keyToolStripMenuItem.Name = "keyToolStripMenuItem";
+            this.keyToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.keyToolStripMenuItem.Text = "Key(n)";
+            this.keyToolStripMenuItem.ToolTipText = "Insert keystroke";
+            this.keyToolStripMenuItem.Click += new System.EventHandler(this.keyToolStripMenuItem_Click);
             // 
             // keyControlCToolStripMenuItem
             // 
+            this.keyControlCToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("keyControlCToolStripMenuItem.Image")));
             this.keyControlCToolStripMenuItem.Name = "keyControlCToolStripMenuItem";
             this.keyControlCToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.keyControlCToolStripMenuItem.Text = "Key(^c)";
@@ -332,6 +364,7 @@
             // 
             // keyShiftCToolStripMenuItem
             // 
+            this.keyShiftCToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("keyShiftCToolStripMenuItem.Image")));
             this.keyShiftCToolStripMenuItem.Name = "keyShiftCToolStripMenuItem";
             this.keyShiftCToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.keyShiftCToolStripMenuItem.Text = "Key(+c)";
@@ -340,19 +373,38 @@
             // 
             // keyAltCToolStripMenuItem
             // 
+            this.keyAltCToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("keyAltCToolStripMenuItem.Image")));
             this.keyAltCToolStripMenuItem.Name = "keyAltCToolStripMenuItem";
             this.keyAltCToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.keyAltCToolStripMenuItem.Text = "Key(%c)";
             this.keyAltCToolStripMenuItem.ToolTipText = "Insert keystroke Alt-C";
             this.keyAltCToolStripMenuItem.Click += new System.EventHandler(this.keyAltCToolStripMenuItem_Click);
             // 
+            // keyHelpToolStripMenuItem
+            // 
+            this.keyHelpToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("keyHelpToolStripMenuItem.Image")));
+            this.keyHelpToolStripMenuItem.Name = "keyHelpToolStripMenuItem";
+            this.keyHelpToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.keyHelpToolStripMenuItem.Text = "(Show commands)";
+            this.keyHelpToolStripMenuItem.Click += new System.EventHandler(this.keyHelpToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(229, 6);
             // 
+            // delayToolStripMenuItem
+            // 
+            this.delayToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("delayToolStripMenuItem.Image")));
+            this.delayToolStripMenuItem.Name = "delayToolStripMenuItem";
+            this.delayToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.delayToolStripMenuItem.Text = "Delay(n)";
+            this.delayToolStripMenuItem.ToolTipText = "Insert delay";
+            this.delayToolStripMenuItem.Click += new System.EventHandler(this.delayToolStripMenuItem_Click);
+            // 
             // delay500ToolStripMenuItem
             // 
+            this.delay500ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("delay500ToolStripMenuItem.Image")));
             this.delay500ToolStripMenuItem.Name = "delay500ToolStripMenuItem";
             this.delay500ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.delay500ToolStripMenuItem.Text = "Delay(500)";
@@ -361,6 +413,7 @@
             // 
             // delay1000ToolStripMenuItem
             // 
+            this.delay1000ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("delay1000ToolStripMenuItem.Image")));
             this.delay1000ToolStripMenuItem.Name = "delay1000ToolStripMenuItem";
             this.delay1000ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.delay1000ToolStripMenuItem.Text = "Delay(1000)";
@@ -369,31 +422,18 @@
             // 
             // delay2000ToolStripMenuItem
             // 
+            this.delay2000ToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("delay2000ToolStripMenuItem.Image")));
             this.delay2000ToolStripMenuItem.Name = "delay2000ToolStripMenuItem";
             this.delay2000ToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.delay2000ToolStripMenuItem.Text = "Delay(2000)";
             this.delay2000ToolStripMenuItem.ToolTipText = "Insert delay 2000ms";
             this.delay2000ToolStripMenuItem.Click += new System.EventHandler(this.delay2000ToolStripMenuItem_Click);
             // 
-            // delayToolStripMenuItem
-            // 
-            this.delayToolStripMenuItem.Name = "delayToolStripMenuItem";
-            this.delayToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.delayToolStripMenuItem.Text = "Delay()";
-            this.delayToolStripMenuItem.Click += new System.EventHandler(this.delayToolStripMenuItem_Click);
-            // 
-            // keyToolStripMenuItem
-            // 
-            this.keyToolStripMenuItem.Name = "keyToolStripMenuItem";
-            this.keyToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.keyToolStripMenuItem.Text = "Key()";
-            this.keyToolStripMenuItem.Click += new System.EventHandler(this.keyToolStripMenuItem_Click);
-            // 
             // FormAddHotkey
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(484, 461);
+            this.ClientSize = new System.Drawing.Size(484, 627);
             this.Controls.Add(this.btnAction);
             this.Controls.Add(this.labelMouse);
             this.Controls.Add(this.labelLineTop);
@@ -407,15 +447,14 @@
             this.Controls.Add(this.labelHotkey);
             this.Controls.Add(this.labelAction);
             this.Controls.Add(this.txtHotkey);
-            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(500, 500);
             this.Name = "FormAddHotkey";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Hotkey";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Macro Hotkey";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.FormAddHotkey_HelpButtonClicked);
             this.Load += new System.EventHandler(this.FormAddHotkey_Load);
             this.panelTop.ResumeLayout(false);
@@ -462,5 +501,7 @@
         private System.Windows.Forms.ToolStripMenuItem delay2000ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem keyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem delayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem keyHelpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mouseClickMiddleToolStripMenuItem;
     }
 }

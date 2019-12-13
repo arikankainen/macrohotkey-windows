@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGetMouseLocation));
             this.btnLocation = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -52,10 +53,10 @@
             this.ControlBox = false;
             this.Controls.Add(this.btnLocation);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormGetMouseLocation";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Get mouse location";
+            this.Text = "Find mouse position";
             this.TopMost = true;
             this.ResumeLayout(false);
 

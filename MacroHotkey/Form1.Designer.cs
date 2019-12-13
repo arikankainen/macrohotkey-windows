@@ -31,19 +31,20 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.labelTopic = new System.Windows.Forms.Label();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.btnModify = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.checkActive = new System.Windows.Forms.CheckBox();
+            this.LabelTopic = new System.Windows.Forms.Label();
+            this.BtnAdd = new System.Windows.Forms.Button();
+            this.BtnModify = new System.Windows.Forms.Button();
+            this.BtnDelete = new System.Windows.Forms.Button();
+            this.NotifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.CheckActive = new System.Windows.Forms.CheckBox();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItemOpen = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
-            this.lstActions = new MacroHotkey.VisualStylesListView();
-            this.clmName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clmHotkey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.clmAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LstActions = new MacroHotkey.VisualStylesListView();
+            this.ClmName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ClmHotkey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ClmAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.timerIcon = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,74 +53,74 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel1.Controls.Add(this.labelTopic);
+            this.panel1.Controls.Add(this.LabelTopic);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(570, 51);
             this.panel1.TabIndex = 20;
             // 
-            // labelTopic
+            // LabelTopic
             // 
-            this.labelTopic.AutoSize = true;
-            this.labelTopic.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTopic.Location = new System.Drawing.Point(21, 18);
-            this.labelTopic.Name = "labelTopic";
-            this.labelTopic.Size = new System.Drawing.Size(79, 13);
-            this.labelTopic.TabIndex = 0;
-            this.labelTopic.Text = "List of macros";
+            this.LabelTopic.AutoSize = true;
+            this.LabelTopic.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelTopic.Location = new System.Drawing.Point(21, 18);
+            this.LabelTopic.Name = "LabelTopic";
+            this.LabelTopic.Size = new System.Drawing.Size(79, 13);
+            this.LabelTopic.TabIndex = 0;
+            this.LabelTopic.Text = "List of macros";
             // 
-            // btnAdd
+            // BtnAdd
             // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAdd.Location = new System.Drawing.Point(24, 335);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 24;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnAdd.Location = new System.Drawing.Point(24, 335);
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(75, 23);
+            this.BtnAdd.TabIndex = 24;
+            this.BtnAdd.Text = "Add";
+            this.BtnAdd.UseVisualStyleBackColor = true;
+            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
-            // btnModify
+            // BtnModify
             // 
-            this.btnModify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnModify.Location = new System.Drawing.Point(105, 335);
-            this.btnModify.Name = "btnModify";
-            this.btnModify.Size = new System.Drawing.Size(75, 23);
-            this.btnModify.TabIndex = 25;
-            this.btnModify.Text = "Modify";
-            this.btnModify.UseVisualStyleBackColor = true;
-            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
+            this.BtnModify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnModify.Location = new System.Drawing.Point(105, 335);
+            this.BtnModify.Name = "BtnModify";
+            this.BtnModify.Size = new System.Drawing.Size(75, 23);
+            this.BtnModify.TabIndex = 25;
+            this.BtnModify.Text = "Modify";
+            this.BtnModify.UseVisualStyleBackColor = true;
+            this.BtnModify.Click += new System.EventHandler(this.BtnModify_Click);
             // 
-            // btnDelete
+            // BtnDelete
             // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDelete.Location = new System.Drawing.Point(186, 335);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 26;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnDelete.Location = new System.Drawing.Point(186, 335);
+            this.BtnDelete.Name = "BtnDelete";
+            this.BtnDelete.Size = new System.Drawing.Size(75, 23);
+            this.BtnDelete.TabIndex = 26;
+            this.BtnDelete.Text = "Delete";
+            this.BtnDelete.UseVisualStyleBackColor = true;
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
-            // notifyIcon1
+            // NotifyIcon1
             // 
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "Macro Hotkey";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.NotifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifyIcon1.Icon")));
+            this.NotifyIcon1.Text = "Macro Hotkey";
+            this.NotifyIcon1.Visible = true;
+            this.NotifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1_MouseDoubleClick);
             // 
-            // checkActive
+            // CheckActive
             // 
-            this.checkActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkActive.AutoSize = true;
-            this.checkActive.Checked = true;
-            this.checkActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkActive.Location = new System.Drawing.Point(449, 339);
-            this.checkActive.Name = "checkActive";
-            this.checkActive.Size = new System.Drawing.Size(97, 17);
-            this.checkActive.TabIndex = 27;
-            this.checkActive.Text = "Hotkeys active";
-            this.checkActive.UseVisualStyleBackColor = true;
+            this.CheckActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CheckActive.AutoSize = true;
+            this.CheckActive.Checked = true;
+            this.CheckActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckActive.Location = new System.Drawing.Point(449, 339);
+            this.CheckActive.Name = "CheckActive";
+            this.CheckActive.Size = new System.Drawing.Size(97, 17);
+            this.CheckActive.TabIndex = 27;
+            this.CheckActive.Text = "Hotkeys active";
+            this.CheckActive.UseVisualStyleBackColor = true;
             // 
             // contextMenu1
             // 
@@ -131,65 +132,72 @@
             // 
             this.menuItemOpen.Index = 0;
             this.menuItemOpen.Text = "Open";
-            this.menuItemOpen.Click += new System.EventHandler(this.menuItemOpen_Click);
+            this.menuItemOpen.Click += new System.EventHandler(this.MenuItemOpen_Click);
             // 
             // menuItemExit
             // 
             this.menuItemExit.Index = 1;
             this.menuItemExit.Text = "Exit";
-            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
+            this.menuItemExit.Click += new System.EventHandler(this.MenuItemExit_Click);
             // 
-            // lstActions
+            // LstActions
             // 
-            this.lstActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.LstActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstActions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.clmName,
-            this.clmHotkey,
-            this.clmAction});
-            this.lstActions.FullRowSelect = true;
-            this.lstActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lstActions.HideSelection = false;
-            this.lstActions.Location = new System.Drawing.Point(24, 75);
-            this.lstActions.MultiSelect = false;
-            this.lstActions.Name = "lstActions";
-            this.lstActions.Size = new System.Drawing.Size(522, 221);
-            this.lstActions.TabIndex = 23;
-            this.lstActions.UseCompatibleStateImageBehavior = false;
-            this.lstActions.View = System.Windows.Forms.View.Details;
-            this.lstActions.SelectedIndexChanged += new System.EventHandler(this.lstActions_SelectedIndexChanged);
-            this.lstActions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstActions_MouseDoubleClick);
+            this.LstActions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ClmName,
+            this.ClmHotkey,
+            this.ClmAction});
+            this.LstActions.FullRowSelect = true;
+            this.LstActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.LstActions.HideSelection = false;
+            this.LstActions.Location = new System.Drawing.Point(24, 75);
+            this.LstActions.MultiSelect = false;
+            this.LstActions.Name = "LstActions";
+            this.LstActions.Size = new System.Drawing.Size(522, 221);
+            this.LstActions.TabIndex = 23;
+            this.LstActions.UseCompatibleStateImageBehavior = false;
+            this.LstActions.View = System.Windows.Forms.View.Details;
+            this.LstActions.SelectedIndexChanged += new System.EventHandler(this.LstActions_SelectedIndexChanged);
+            this.LstActions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LstActions_MouseDoubleClick);
             // 
-            // clmName
+            // ClmName
             // 
-            this.clmName.Text = "Name";
-            this.clmName.Width = 140;
+            this.ClmName.Text = "Name";
+            this.ClmName.Width = 140;
             // 
-            // clmHotkey
+            // ClmHotkey
             // 
-            this.clmHotkey.Text = "Hotkey";
-            this.clmHotkey.Width = 160;
+            this.ClmHotkey.Text = "Hotkey";
+            this.ClmHotkey.Width = 160;
             // 
-            // clmAction
+            // ClmAction
             // 
-            this.clmAction.Text = "Macro";
-            this.clmAction.Width = 191;
+            this.ClmAction.Text = "Macro";
+            this.ClmAction.Width = 191;
+            // 
+            // timerIcon
+            // 
+            this.timerIcon.Interval = 500;
+            this.timerIcon.Tick += new System.EventHandler(this.TimerIcon_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(570, 371);
-            this.Controls.Add(this.checkActive);
-            this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.btnModify);
-            this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.lstActions);
+            this.Controls.Add(this.CheckActive);
+            this.Controls.Add(this.BtnDelete);
+            this.Controls.Add(this.BtnModify);
+            this.Controls.Add(this.BtnAdd);
+            this.Controls.Add(this.LstActions);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(586, 410);
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Macro Hotkey";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -205,19 +213,20 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label labelTopic;
-        private VisualStylesListView lstActions;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnModify;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.ColumnHeader clmName;
-        private System.Windows.Forms.ColumnHeader clmHotkey;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.CheckBox checkActive;
-        private System.Windows.Forms.ColumnHeader clmAction;
+        private System.Windows.Forms.Label LabelTopic;
+        private VisualStylesListView LstActions;
+        private System.Windows.Forms.Button BtnAdd;
+        private System.Windows.Forms.Button BtnModify;
+        private System.Windows.Forms.Button BtnDelete;
+        private System.Windows.Forms.ColumnHeader ClmName;
+        private System.Windows.Forms.ColumnHeader ClmHotkey;
+        private System.Windows.Forms.NotifyIcon NotifyIcon1;
+        private System.Windows.Forms.CheckBox CheckActive;
+        private System.Windows.Forms.ColumnHeader ClmAction;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuItemOpen;
         private System.Windows.Forms.MenuItem menuItemExit;
+        private System.Windows.Forms.Timer timerIcon;
     }
 }
 

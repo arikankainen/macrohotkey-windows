@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,7 +61,10 @@
     <Compile Include="Form1_Accessories.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1_Keyboard.cs">
+    <Compile Include="Form1_Action.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1_KeyboardMouse.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1_LoadSave.cs">
@@ -70,23 +76,17 @@
     <Compile Include="FormAddHotkey.designer.cs">
       <DependentUpon>FormAddHotkey.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAddHotkeyHelp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAddHotkeyHelp.Designer.cs">
-      <DependentUpon>FormAddHotkeyHelp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormBase.designer.cs">
-      <DependentUpon>FormBase.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormGetMouseLocation.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormGetMouseLocation.Designer.cs">
       <DependentUpon>FormGetMouseLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNotification.Designer.cs">
+      <DependentUpon>FormNotification.cs</DependentUpon>
     </Compile>
     <Compile Include="Hotkeys.cs" />
     <Compile Include="KeyboardHook.cs" />
@@ -103,14 +103,11 @@
     <EmbeddedResource Include="FormAddHotkey.resx">
       <DependentUpon>FormAddHotkey.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAddHotkeyHelp.resx">
-      <DependentUpon>FormAddHotkeyHelp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormBase.resx">
-      <DependentUpon>FormBase.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormGetMouseLocation.resx">
       <DependentUpon>FormGetMouseLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormNotification.resx">
+      <DependentUpon>FormNotification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -136,6 +133,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="blank.ico" />
     <Content Include="mh.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
