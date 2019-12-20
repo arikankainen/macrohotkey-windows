@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.LabelTopic = new System.Windows.Forms.Label();
             this.BtnAdd = new System.Windows.Forms.Button();
             this.BtnModify = new System.Windows.Forms.Button();
             this.BtnDelete = new System.Windows.Forms.Button();
@@ -40,34 +38,19 @@
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItemOpen = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
+            this.timerIcon = new System.Windows.Forms.Timer(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSCloseToTray = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSStartInTray = new System.Windows.Forms.ToolStripMenuItem();
             this.LstActions = new MacroHotkey.VisualStylesListView();
             this.ClmName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmHotkey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.timerIcon = new System.Windows.Forms.Timer(this.components);
-            this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel1.Controls.Add(this.LabelTopic);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(570, 51);
-            this.panel1.TabIndex = 20;
-            // 
-            // LabelTopic
-            // 
-            this.LabelTopic.AutoSize = true;
-            this.LabelTopic.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelTopic.Location = new System.Drawing.Point(21, 18);
-            this.LabelTopic.Name = "LabelTopic";
-            this.LabelTopic.Size = new System.Drawing.Size(79, 13);
-            this.LabelTopic.TabIndex = 0;
-            this.LabelTopic.Text = "List of macros";
             // 
             // BtnAdd
             // 
@@ -140,6 +123,60 @@
             this.menuItemExit.Text = "Exit";
             this.menuItemExit.Click += new System.EventHandler(this.MenuItemExit_Click);
             // 
+            // timerIcon
+            // 
+            this.timerIcon.Interval = 500;
+            this.timerIcon.Tick += new System.EventHandler(this.TimerIcon_Tick);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.settingsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(570, 24);
+            this.menuStrip1.TabIndex = 28;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSExit});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // TSExit
+            // 
+            this.TSExit.Name = "TSExit";
+            this.TSExit.Size = new System.Drawing.Size(180, 22);
+            this.TSExit.Text = "Exit";
+            this.TSExit.Click += new System.EventHandler(this.TSExit_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSCloseToTray,
+            this.TSStartInTray});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // TSCloseToTray
+            // 
+            this.TSCloseToTray.Name = "TSCloseToTray";
+            this.TSCloseToTray.Size = new System.Drawing.Size(180, 22);
+            this.TSCloseToTray.Text = "Close to tray";
+            this.TSCloseToTray.Click += new System.EventHandler(this.TSCloseToTray_Click);
+            // 
+            // TSStartInTray
+            // 
+            this.TSStartInTray.Name = "TSStartInTray";
+            this.TSStartInTray.Size = new System.Drawing.Size(180, 22);
+            this.TSStartInTray.Text = "Start in tray";
+            this.TSStartInTray.Click += new System.EventHandler(this.TSStartInTray_Click);
+            // 
             // LstActions
             // 
             this.LstActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -152,10 +189,10 @@
             this.LstActions.FullRowSelect = true;
             this.LstActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.LstActions.HideSelection = false;
-            this.LstActions.Location = new System.Drawing.Point(24, 75);
+            this.LstActions.Location = new System.Drawing.Point(24, 48);
             this.LstActions.MultiSelect = false;
             this.LstActions.Name = "LstActions";
-            this.LstActions.Size = new System.Drawing.Size(522, 221);
+            this.LstActions.Size = new System.Drawing.Size(522, 248);
             this.LstActions.TabIndex = 23;
             this.LstActions.UseCompatibleStateImageBehavior = false;
             this.LstActions.View = System.Windows.Forms.View.Details;
@@ -177,11 +214,6 @@
             this.ClmAction.Text = "Macro";
             this.ClmAction.Width = 191;
             // 
-            // timerIcon
-            // 
-            this.timerIcon.Interval = 500;
-            this.timerIcon.Tick += new System.EventHandler(this.TimerIcon_Tick);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -192,7 +224,7 @@
             this.Controls.Add(this.BtnModify);
             this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.LstActions);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(586, 410);
@@ -203,17 +235,14 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label LabelTopic;
         private VisualStylesListView LstActions;
         private System.Windows.Forms.Button BtnAdd;
         private System.Windows.Forms.Button BtnModify;
@@ -227,6 +256,12 @@
         private System.Windows.Forms.MenuItem menuItemOpen;
         private System.Windows.Forms.MenuItem menuItemExit;
         private System.Windows.Forms.Timer timerIcon;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TSExit;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TSCloseToTray;
+        private System.Windows.Forms.ToolStripMenuItem TSStartInTray;
     }
 }
 

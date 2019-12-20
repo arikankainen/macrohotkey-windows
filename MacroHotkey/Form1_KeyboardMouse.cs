@@ -12,6 +12,16 @@ namespace MacroHotkey
 {
     public partial class Form1
     {
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
+        const short SWP_NOMOVE = 0X2;
+        const short SWP_NOSIZE = 1;
+        const short SWP_NOZORDER = 0X4;
+        const int SWP_SHOWWINDOW = 0x0040;
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+
         [DllImport("user32.dll", SetLastError = true)]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
 
@@ -49,6 +59,91 @@ namespace MacroHotkey
             if (mouseButton == MouseButtons.Middle) mouse_event(MOUSEEVENTF_MIDDLEDOWN | MOUSEEVENTF_MIDDLEUP, X, Y, 0, 0);
         }
 
+        public void DoMouseDown(MouseButtons mouseButton)
+        {
+            uint X = (uint)Cursor.Position.X;
+            uint Y = (uint)Cursor.Position.Y;
+            if (mouseButton == MouseButtons.Left) mouse_event(MOUSEEVENTF_LEFTDOWN, X, Y, 0, 0);
+            if (mouseButton == MouseButtons.Right) mouse_event(MOUSEEVENTF_RIGHTDOWN, X, Y, 0, 0);
+            if (mouseButton == MouseButtons.Middle) mouse_event(MOUSEEVENTF_MIDDLEDOWN, X, Y, 0, 0);
+        }
+
+        public void DoMouseUp(MouseButtons mouseButton)
+        {
+            uint X = (uint)Cursor.Position.X;
+            uint Y = (uint)Cursor.Position.Y;
+            if (mouseButton == MouseButtons.Left) mouse_event(MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+            if (mouseButton == MouseButtons.Right) mouse_event(MOUSEEVENTF_RIGHTUP, X, Y, 0, 0);
+            if (mouseButton == MouseButtons.Middle) mouse_event(MOUSEEVENTF_MIDDLEUP, X, Y, 0, 0);
+        }
+
+        private void WindowPosition(string scr, int x, int y)
+        {
+            try
+            {
+                if (scr == null)
+                {
+                    IntPtr handle = GetForegroundWindow();
+                    SetWindowPos(handle, 0, x, y, 0, 0, SWP_NOZORDER | SWP_NOSIZE | SWP_SHOWWINDOW);
+                }
+                else
+                {
+                    Screen screen = GetScreen(scr);
+
+                    if (screen != null)
+                    {
+                        int relativeX = screen.Bounds.X + x;
+                        int relativeY = screen.Bounds.Y + y;
+
+                        IntPtr handle = GetForegroundWindow();
+                        SetWindowPos(handle, 0, relativeX, relativeY, 0, 0, SWP_NOZORDER | SWP_NOSIZE | SWP_SHOWWINDOW);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void SetCursor(string scr, int x, int y)
+        {
+            try
+            {
+                if (scr == null)
+                {
+                    Cursor.Position = new Point(x, y);
+                }
+                else
+                {
+                    Screen screen = GetScreen(scr);
+
+                    if (screen != null)
+                    {
+                        int relativeX = screen.Bounds.X + x;
+                        int relativeY = screen.Bounds.Y + y;
+
+                        Cursor.Position = new Point(relativeX, relativeY);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private Screen GetScreen(string number)
+        {
+            try
+            {
+                foreach (Screen s in Screen.AllScreens)
+                {
+                    if (s.DeviceName.Contains(number)) return s;
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         // ************************************************************************************************************* //
 
         private KeyboardHook hook = new KeyboardHook();
@@ -71,8 +166,13 @@ namespace MacroHotkey
 
         private void HookKey(string mod, string key)
         {
-            if (string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)0, (Keys)Enum.Parse(typeof(Keys), key));
-            else if (!string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)Hotkeys.GetGlobalHotkeyModNumber(mod), (Keys)Enum.Parse(typeof(Keys), key));
+            //if (string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)0, (Keys)Enum.Parse(typeof(Keys), key));
+            //else if (!string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)Hotkeys.GetGlobalHotkeyModNumber(mod), (Keys)Enum.Parse(typeof(Keys), key));
+
+            int.TryParse(Hotkeys.GetValue(key), out int keycode);
+
+            if (string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)0, (Keys)keycode);
+            else if (!string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)Hotkeys.GetGlobalHotkeyModNumber(mod), (Keys)keycode);
         }
 
         private void hook_KeyPressedAsync(object sender, KeyPressedEventArgs e)
@@ -89,6 +189,7 @@ namespace MacroHotkey
         private string GetAction(string modifier, string key)
         {
             if (modifier == "0") modifier = null;
+            key = Hotkeys.GetKeyName(Hotkeys.GetValue(key));
 
             foreach (ListViewItem item in LstActions.Items)
             {

@@ -76,6 +76,12 @@
     <Compile Include="FormAddHotkey.designer.cs">
       <DependentUpon>FormAddHotkey.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormGetKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGetKey.Designer.cs">
+      <DependentUpon>FormGetKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormGetMouseLocation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAddHotkey.resx">
       <DependentUpon>FormAddHotkey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGetKey.resx">
+      <DependentUpon>FormGetKey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormGetMouseLocation.resx">
       <DependentUpon>FormGetMouseLocation.cs</DependentUpon>

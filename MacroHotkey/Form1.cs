@@ -6,14 +6,17 @@ namespace MacroHotkey
 {
     public partial class Form1 : Form
     {
+        private const int DELAY_ON_START = 500;
+        private const int DELAY_BETWEEN = 10;
+
         private const int LIST_NAME = 0;
         private const int LIST_HOTKEY = 1;
         private const int LIST_ACTION = 2;
 
-        private FormNotification notification;
-
+        private readonly FormNotification notification;
         private readonly Settings settings = new Settings();
         private readonly string listFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".lst");
+
         private bool reallyClose = false;
         private bool cancel = false;
         private bool running = false;
@@ -29,7 +32,6 @@ namespace MacroHotkey
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(hook_KeyPressedAsync);
 
             notification = new FormNotification();
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,7 +41,7 @@ namespace MacroHotkey
             ReloadHotkeys();
             LoadSettings();
 
-            this.Opacity = 0;
+            if (TSStartInTray.Checked) this.Opacity = 0;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -47,19 +49,22 @@ namespace MacroHotkey
             SaveList();
             SaveSettings();
 
-            if (!reallyClose)
+            if (reallyClose || e.CloseReason == CloseReason.WindowsShutDown || !TSCloseToTray.Checked)
             {
-                e.Cancel = true;
-                this.Hide();
+                hook.KeyPressed -= new EventHandler<KeyPressedEventArgs>(hook_KeyPressedAsync);
+                notification.Dispose();
             }
             else
             {
-                hook.KeyPressed -= new EventHandler<KeyPressedEventArgs>(hook_KeyPressedAsync);
+                e.Cancel = true;
+                this.Hide();
             }
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
+            hook.DisposeAllKeys();
+
             FormAddHotkey form = new FormAddHotkey();
             form.EditMode = false;
             form.ShowDialog();
@@ -71,14 +76,17 @@ namespace MacroHotkey
                 item.SubItems.Add(form.Action);
 
                 LstActions.Items.Add(item);
-                ReloadHotkeys();
             }
+
+            ReloadHotkeys();
         }
 
         private void BtnModify_Click(object sender, EventArgs e)
         {
             if (LstActions.SelectedItems.Count == 1)
             {
+                hook.DisposeAllKeys();
+
                 FormAddHotkey form = new FormAddHotkey();
                 form.EditMode = true;
                 form.ActionName = LstActions.SelectedItems[LIST_NAME].Text;
@@ -95,8 +103,9 @@ namespace MacroHotkey
                     item.SubItems.Add(form.Action);
 
                     LstActions.Items.Add(item);
-                    ReloadHotkeys();
                 }
+
+                ReloadHotkeys();
             }
         }
 
@@ -163,7 +172,7 @@ namespace MacroHotkey
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            this.Hide();
+            if (TSStartInTray.Checked) this.Hide();
         }
 
         private void TimerIcon_Tick(object sender, EventArgs e)
@@ -178,6 +187,24 @@ namespace MacroHotkey
                 iconVisible = true;
                 NotifyIcon1.Icon = this.Icon = Properties.Resources.mh;
             }
+        }
+
+        private void TSExit_Click(object sender, EventArgs e)
+        {
+            reallyClose = true;
+            this.Close();
+        }
+
+        private void TSCloseToTray_Click(object sender, EventArgs e)
+        {
+            if (TSCloseToTray.Checked) TSCloseToTray.Checked = false;
+            else TSCloseToTray.Checked = true;
+        }
+
+        private void TSStartInTray_Click(object sender, EventArgs e)
+        {
+            if (TSStartInTray.Checked) TSStartInTray.Checked = false;
+            else TSStartInTray.Checked = true;
         }
     }
 }

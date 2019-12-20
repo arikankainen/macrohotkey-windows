@@ -29,41 +29,44 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGetMouseLocation));
-            this.btnLocation = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // btnLocation
+            // label1
             // 
-            this.btnLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLocation.Location = new System.Drawing.Point(12, 12);
-            this.btnLocation.Name = "btnLocation";
-            this.btnLocation.Size = new System.Drawing.Size(159, 34);
-            this.btnLocation.TabIndex = 0;
-            this.btnLocation.Text = "Press enter when done";
-            this.btnLocation.UseVisualStyleBackColor = true;
-            this.btnLocation.Click += new System.EventHandler(this.btnLocation_Click);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(216, 42);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Press \'Enter\' to get mouse position.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormGetMouseLocation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(183, 58);
-            this.ControlBox = false;
-            this.Controls.Add(this.btnLocation);
+            this.ClientSize = new System.Drawing.Size(240, 60);
+            this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormGetMouseLocation";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Find mouse position";
+            this.Text = "Macro Hotkey";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGetMouseLocation_FormClosing);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnLocation;
+        private System.Windows.Forms.Label label1;
     }
 }

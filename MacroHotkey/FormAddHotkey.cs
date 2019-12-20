@@ -5,14 +5,22 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MacroHotkey
 {
     public partial class FormAddHotkey : Form
     {
+        private Settings settings = new Settings();
+
+        private const string REPLACE_SEMICOLON = "###_SC_###";
+        private const string REPLACE_PIPE = "###_PIPE_###";
+
         private DialogResult result;
+
         public DialogResult Result
         {
             get { return result; }
@@ -43,7 +51,7 @@ namespace MacroHotkey
             {
                 if (txtAction.Text != "")
                 {
-                    return txtAction.Text.Trim().Replace(Environment.NewLine, ";");
+                    return txtAction.Text.Trim().Replace(";", REPLACE_SEMICOLON).Replace("|", REPLACE_PIPE).Replace(Environment.NewLine, ";");
                 }
 
                 else return "";
@@ -53,7 +61,7 @@ namespace MacroHotkey
             {
                 if (value != null && value != "")
                 {
-                    txtAction.Text = value.Replace(";", Environment.NewLine);
+                    txtAction.Text = value.Replace(";", Environment.NewLine).Replace(REPLACE_SEMICOLON, ";").Replace(REPLACE_PIPE, "|");
                 }
             }
         }
@@ -79,8 +87,16 @@ namespace MacroHotkey
             timerMouse.Start();
         }
 
+        private void CenterForm()
+        {
+            Screen screen = Screen.FromPoint(Cursor.Position);
+            this.Left = screen.WorkingArea.Left + (screen.WorkingArea.Size.Width / 2) - (this.Width / 2);
+            this.Top = screen.WorkingArea.Top + (screen.WorkingArea.Size.Height / 2) - (this.Height / 2) - 1;
+        }
+
 		private void btnOk_Click(object sender, EventArgs e)
         {
+            SaveSettings();
             result = DialogResult.OK;
             this.Close();
         }
@@ -91,22 +107,17 @@ namespace MacroHotkey
             this.Close();
         }
 
-        private void btnHotkeyOk_Click(object sender, EventArgs e)
-        {
-            //result = DialogResult.OK;
-            //this.Close();
-        }
-
-        private void btnHotkeyCancel_Click(object sender, EventArgs e)
-        {
-            //result = DialogResult.Cancel;
-            //this.Close();
-        }
-
         private void FormAddHotkey_Load(object sender, EventArgs e)
         {
+            LoadSettings();
+            CenterForm();
+
             if (editMode) labelName.Text = "Edit macro";
             else labelName.Text = "New macro";
+        }
+
+        private void FormAddHotkey_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
 
         private void FormAddHotkey_Shown(object sender, EventArgs e)
@@ -177,118 +188,41 @@ namespace MacroHotkey
                 else txtHotkey.Text = Hotkeys.GetKeyName(listKeyValuesTemp[i]);
             }
 
-            if (!acceptMore) labelAction.Focus();
+            if (!acceptMore) labelName.Focus();
         }
 
         private void txtHotkey_KeyUp(object sender, KeyEventArgs e)
         {
             if (acceptMore) txtHotkey.Text = txtOrig;
             listKeyValuesTemp.Clear();
-            if (txtChanged) labelAction.Focus();
-        }
-
-        private void FormAddHotkey_HelpButtonClicked(object sender, CancelEventArgs e)
-        {
+            if (txtChanged) labelName.Focus();
         }
 
         private void timerMouse_Tick(object sender, EventArgs e)
         {
-            string mouse = "Mouse position: " + Cursor.Position.X.ToString() + "," + Cursor.Position.Y.ToString();
-
-            Screen screenPrimary = Screen.PrimaryScreen;
             Screen screen = Screen.FromPoint(MousePosition);
-            mouse += " / Monitor " + screen.DeviceName.Substring(screen.DeviceName.Length - 1);
-            if (screen.DeviceName == screenPrimary.DeviceName) mouse += " (Primary)";
-            labelMouse.Text = mouse;
-        }
+            Screen screenPrimary = Screen.PrimaryScreen;
+            Point screenLocation = screen.Bounds.Location;
 
-        private void btnAction_Click(object sender, EventArgs e)
-        {
-            contextMenuAction.Show(btnAction, new Point(-contextMenuAction.Width - 5, 0));
-            contextMenuAction.Show(btnAction, new Point(-contextMenuAction.Width - 9, -contextMenuAction.Height + btnAction.Height));
-        }
+            int absoluteX = Cursor.Position.X;
+            int absoluteY = Cursor.Position.Y;
 
-        private void mouseClickLeftToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseClick(Left)");
-            
-        }
+            int absoluteTotalX = screen.Bounds.Width;
+            int absoluteTotalY = screen.Bounds.Height;
 
-        private void mouseClickRightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseClick(Right)");
-        }
+            int relativeX = Math.Abs(screenLocation.X - absoluteX);
+            int relativeY = Math.Abs(screenLocation.Y - absoluteY);
 
-        private void mouseClickMiddleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseClick(Middle)");
-        }
+            string monitor = screen.DeviceName.Substring(screen.DeviceName.Length - 1);
+            bool primary = screen.DeviceName == screenPrimary.DeviceName ? true : false;
 
-        private void mouseMoveMonitor1ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseMoveMonitor(1)");
-        }
+            LblAbsolute.Text = absoluteX.ToString() + ", " + absoluteY.ToString();
+            LblRelative.Text = relativeX.ToString() + ", " + relativeY.ToString();
+            LblResolution.Text = absoluteTotalX.ToString() + " x " + absoluteTotalY.ToString();
 
-        private void mouseMoveMonitor2ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseMoveMonitor(2)");
-        }
-
-        private void mouseMoveMonitorPrimaryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseMoveMonitor(Primary)");
-        }
-
-        private void mouseMoveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("MouseMove()", 1);
-        }
-
-        private void mouseLocationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormGetMouseLocation form = new FormGetMouseLocation();
-            form.ShowDialog();
-            AddText("MousePosition(" + form.Position.X.ToString() + "," + form.Position.Y.ToString() + ")");
-        }
-
-        private void keyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Key()", 1);
-        }
-
-        private void keyControlCToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Key(^c)");
-        }
-
-        private void keyShiftCToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Key(+c)");
-        }
-
-        private void keyAltCToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Key(%c)");
-        }
-
-        private void delayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Delay()", 1);
-        }
-
-        private void delay500ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Delay(500)");
-        }
-
-        private void delay1000ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Delay(1000)");
-        }
-
-        private void delay2000ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AddText("Delay(2000)");
+            string mon = monitor;
+            mon += primary ? " (Primary)" : "";
+            LblMonitor.Text = mon;
         }
 
         private void AddText(string text)
@@ -298,21 +232,263 @@ namespace MacroHotkey
 
         private void AddText(string text, int pos)
         {
-            if (pos == 0) text += Environment.NewLine;
-            var selectionIndex = txtAction.SelectionStart;
-            txtAction.Text = txtAction.Text.Insert(selectionIndex, text);
-            txtAction.SelectionStart = selectionIndex + text.Length - pos;
+            int scrollPosition = GetScrollPos(txtAction.Handle, 1);
+
+            bool replace = txtAction.SelectionLength > 0 ? true : false;
+
+            if (pos == 0 && !replace) text += Environment.NewLine;
+            
+            int selectionStart = txtAction.SelectionStart;
+            int selectionLength = txtAction.SelectionLength;
+
+            if (replace) txtAction.Text = txtAction.Text.Remove(selectionStart, selectionLength);
+            else selectionStart = txtAction.GetFirstCharIndexFromLine(txtAction.GetLineFromCharIndex(selectionStart));
+
+            txtAction.Text = txtAction.Text.Insert(selectionStart, text);
+            txtAction.SelectionStart = selectionStart + text.Length - pos;
             txtAction.Focus();
+            //txtAction.ScrollToCaret();
+
+            SetScrollPos(txtAction.Handle, 1, scrollPosition, true);
+            SendMessage(txtAction.Handle, EM_LINESCROLL, 0, scrollPosition);
         }
 
-        private void keyHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        [DllImport("user32.dll")]
+        static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+        [DllImport("user32.dll")]
+        static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        const int EM_LINESCROLL = 0x00B6;
+
+        private void BtnMousePositionMonitor_Click(object sender, EventArgs e)
         {
-            Process.Start("https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx");
+            FormGetMouseLocation form = new FormGetMouseLocation();
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("MousePosition(" + form.PositionRelative.X.ToString() + "," + form.PositionRelative.Y.ToString() + "," + form.Monitor + ")");
+            form.Dispose();
+
+            this.Activate();
         }
 
-        private void contextMenuAction_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        private void BtnMousePosition_Click(object sender, EventArgs e)
         {
-            //e.Cancel = true;
+            FormGetMouseLocation form = new FormGetMouseLocation();
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("MousePosition(" + form.PositionAbsolute.X.ToString() + "," + form.PositionAbsolute.Y.ToString() + ")");
+            form.Dispose();
+
+            this.Activate();
         }
+
+        private void BtnMouseMove_Click(object sender, EventArgs e)
+        {
+            AddText("MouseMove()", 1);
+        }
+
+        private void BtnMouseClickLeft_Click(object sender, EventArgs e)
+        {
+            AddText("MouseClick(Left)");
+        }
+
+        private void BtnMouseClickMiddle_Click(object sender, EventArgs e)
+        {
+            AddText("MouseClick(Middle)");
+        }
+
+        private void BtnMouseClickRight_Click(object sender, EventArgs e)
+        {
+            AddText("MouseClick(Right)");
+        }
+
+        private void BtnMouseDownLeft_Click(object sender, EventArgs e)
+        {
+            AddText("MouseDown(Left)");
+        }
+
+        private void BtnMouseUpLeft_Click(object sender, EventArgs e)
+        {
+            AddText("MouseUp(Left)");
+        }
+
+        private void BtnKey_Click(object sender, EventArgs e)
+        {
+            FormGetKey form = new FormGetKey();
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("Key(" + form.Keystring + ")");
+            form.Dispose();
+        }
+
+        private void BtnKey1_Click(object sender, EventArgs e)
+        {
+            AddText("Key(" + TxtKey1.Text + ")");
+        }
+
+        private void BtnKey2_Click(object sender, EventArgs e)
+        {
+            AddText("Key(" + TxtKey2.Text + ")");
+        }
+
+        private void BtnKey3_Click(object sender, EventArgs e)
+        {
+            AddText("Key(" + TxtKey3.Text + ")");
+        }
+
+        private void BtnDelay_Click(object sender, EventArgs e)
+        {
+            AddText("Delay()", 1);
+        }
+
+        private void BtnDelay1_Click(object sender, EventArgs e)
+        {
+            AddText("Delay(" + TxtDelay1.Text + ")");
+        }
+
+        private void BtnDelay2_Click(object sender, EventArgs e)
+        {
+            AddText("Delay(" + TxtDelay2.Text + ")");
+        }
+
+        private void BtnDelay3_Click(object sender, EventArgs e)
+        {
+            AddText("Delay(" + TxtDelay3.Text + ")");
+        }
+
+        private void TxtKey1_TextChanged(object sender, EventArgs e)
+        {
+            BtnKey1.Text = "Key(" + TxtKey1.Text.Trim() + ")";
+        }
+
+        private void TxtKey2_TextChanged(object sender, EventArgs e)
+        {
+            BtnKey2.Text = "Key(" + TxtKey2.Text.Trim() + ")";
+        }
+
+        private void TxtKey3_TextChanged(object sender, EventArgs e)
+        {
+            BtnKey3.Text = "Key(" + TxtKey3.Text.Trim() + ")";
+        }
+
+        private void TxtDelay1_TextChanged(object sender, EventArgs e)
+        {
+            BtnDelay1.Text = "Delay(" + TxtDelay1.Text.Trim() + ")";
+        }
+
+        private void TxtDelay2_TextChanged(object sender, EventArgs e)
+        {
+            BtnDelay2.Text = "Delay(" + TxtDelay2.Text.Trim() + ")";
+        }
+
+        private void TxtDelay3_TextChanged(object sender, EventArgs e)
+        {
+            BtnDelay3.Text = "Delay(" + TxtDelay3.Text.Trim() + ")";
+        }
+
+        private void BtnWindowPositionMonitor_Click(object sender, EventArgs e)
+        {
+            FormGetMouseLocation form = new FormGetMouseLocation();
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("WindowPosition(" + form.PositionRelative.X.ToString() + "," + form.PositionRelative.Y.ToString() + "," + form.Monitor + ")");
+            form.Dispose();
+
+            this.Activate();
+        }
+
+        private void SaveSettings()
+        {
+            if (this.Width >= this.MinimumSize.Width) settings.SaveSetting("MacroWidth", this.Width.ToString());
+            if (this.Height >= this.MinimumSize.Height) settings.SaveSetting("MacroHeight", this.Height.ToString());
+
+            settings.SaveSetting("CustomKey1", TxtKey1.Text);
+            settings.SaveSetting("CustomKey2", TxtKey2.Text);
+            settings.SaveSetting("CustomKey3", TxtKey3.Text);
+            settings.SaveSetting("CustomDelay1", TxtDelay1.Text);
+            settings.SaveSetting("CustomDelay2", TxtDelay2.Text);
+            settings.SaveSetting("CustomDelay3", TxtDelay3.Text);
+        }
+
+        private void LoadSettings()
+        {
+            this.Width = settings.LoadSetting("MacroWidth", "int", "713");
+            this.Height = settings.LoadSetting("MacroHeight", "int", "745");
+
+            TxtKey1.Text = settings.LoadSetting("CustomKey1", "string", "^C");
+            TxtKey2.Text = settings.LoadSetting("CustomKey2", "string", "^V");
+            TxtKey3.Text = settings.LoadSetting("CustomKey3", "string", "{ENTER}");
+            TxtDelay1.Text = settings.LoadSetting("CustomDelay1", "string", "500");
+            TxtDelay2.Text = settings.LoadSetting("CustomDelay2", "string", "1000");
+            TxtDelay3.Text = settings.LoadSetting("CustomDelay3", "string", "2000");
+        }
+
+        private void txtAction_DoubleClick(object sender, EventArgs e)
+        {
+            string row = txtAction.Lines[txtAction.GetLineFromCharIndex(txtAction.SelectionStart)];
+            txtAction.SelectionLength = 0;
+
+            Regex regex = new Regex(@"(^.*?)\((.*)\)");
+            Match match = regex.Match(row.ToLower());
+
+            string command = match.Groups[1].Value;
+            string value = match.Groups[2].Value;
+
+            if (command == "mouseposition")
+            {
+                try
+                {
+                    List<string> position = value.Split(',').ToList();
+
+                    int.TryParse(position[0], out int x);
+                    int.TryParse(position[1], out int y);
+
+                    string scr = position.Count > 2 ? position[2] : null;
+
+                    SetCursor(scr, x, y);
+                }
+                catch { }
+            }
+        }
+
+        private void SetCursor(string scr, int x, int y)
+        {
+            try
+            {
+                if (scr == null)
+                {
+                    Cursor.Position = new Point(x, y);
+                }
+                else
+                {
+                    Screen screen = GetScreen(scr);
+
+                    if (screen != null)
+                    {
+                        int relativeX = screen.Bounds.X + x;
+                        int relativeY = screen.Bounds.Y + y;
+
+                        Cursor.Position = new Point(relativeX, relativeY);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private Screen GetScreen(string number)
+        {
+            try
+            {
+                foreach (Screen s in Screen.AllScreens)
+                {
+                    if (s.DeviceName.Contains(number)) return s;
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
     }
 }

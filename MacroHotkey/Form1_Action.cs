@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -12,8 +11,6 @@ namespace MacroHotkey
 {
     public partial class Form1
     {
-        private const int DELAY_ON_START = 500;
-
         private async Task WaitMillisecondsAsync(int ms)
         {
             await Task.Run(async () =>
@@ -30,6 +27,8 @@ namespace MacroHotkey
             {
                 if (row.Length > 0 && !row.StartsWith("#"))
                 {
+                    totalTime += DELAY_BETWEEN;
+
                     Regex regex = new Regex(@"(^.*?)\((.*)\)");
                     Match match = regex.Match(row.ToLower());
 
@@ -39,9 +38,8 @@ namespace MacroHotkey
                     if (command == "delay")
                     {
                         int.TryParse(value, out int delay);
-                        if (delay > 0 && delay < 10000) totalTime += delay;
+                        if (delay > 0 && delay < 60000) totalTime += delay;
                     }
-
                 }
             }
             
@@ -84,6 +82,8 @@ namespace MacroHotkey
             {
                 if (row.StartsWith("#")) return;
 
+                await WaitMillisecondsAsync(DELAY_BETWEEN);
+
                 Regex regex = new Regex(@"(^.*?)\((.*)\)");
                 Match match = regex.Match(row.ToLower());
 
@@ -105,10 +105,32 @@ namespace MacroHotkey
                     {
                         int.TryParse(value, out int delay);
 
-                        if (delay > 0 && delay < 10000)
+                        if (delay > 0 && delay < 60000)
                         {
                             await WaitMillisecondsAsync(delay);
                         }
+                    }
+                    catch { }
+                }
+
+                else if (command == "mousedown")
+                {
+                    try
+                    {
+                        if (value == "left") DoMouseDown(MouseButtons.Left);
+                        else if (value == "right") DoMouseDown(MouseButtons.Right);
+                        else if (value == "middle") DoMouseDown(MouseButtons.Middle);
+                    }
+                    catch { }
+                }
+
+                else if (command == "mouseup")
+                {
+                    try
+                    {
+                        if (value == "left") DoMouseUp(MouseButtons.Left);
+                        else if (value == "right") DoMouseUp(MouseButtons.Right);
+                        else if (value == "middle") DoMouseUp(MouseButtons.Middle);
                     }
                     catch { }
                 }
@@ -129,9 +151,10 @@ namespace MacroHotkey
                     try
                     {
                         List<string> position = value.Split(',').ToList<string>();
-                        int x = 0, y = 0;
-                        int.TryParse(position[0], out x);
-                        int.TryParse(position[1], out y);
+
+                        int.TryParse(position[0], out int x);
+                        int.TryParse(position[1], out int y);
+
                         Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
                     }
                     catch { }
@@ -141,11 +164,14 @@ namespace MacroHotkey
                 {
                     try
                     {
-                        List<string> position = value.Split(',').ToList<string>();
-                        int x = 0, y = 0;
-                        int.TryParse(position[0], out x);
-                        int.TryParse(position[1], out y);
-                        Cursor.Position = new Point(x, y);
+                        List<string> position = value.Split(',').ToList();
+
+                        int.TryParse(position[0], out int x);
+                        int.TryParse(position[1], out int y);
+
+                        string scr = position.Count > 2 ? position[2] : null;
+
+                        SetCursor(scr, x, y);
                     }
                     catch { }
                 }
@@ -168,9 +194,26 @@ namespace MacroHotkey
                     }
                     catch { }
                 }
+
+                else if (command == "windowposition")
+                {
+                    try
+                    {
+                        List<string> position = value.Split(',').ToList();
+
+                        int.TryParse(position[0], out int x);
+                        int.TryParse(position[1], out int y);
+
+                        string scr = position.Count > 2 ? position[2] : null;
+
+                        WindowPosition(scr, x, y);
+                    }
+                    catch { }
+                }
             }
 
             catch { }
         }
+
     }
 }

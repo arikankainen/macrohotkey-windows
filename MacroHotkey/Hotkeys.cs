@@ -118,10 +118,10 @@ namespace MacroHotkey
                 {
                     if (first)
                     {
-                        hotkey = Hotkeys.GetKeyName(key);
+                        hotkey = GetKeyName(key);
                         first = false;
                     }
-                    else hotkey += "+" + Hotkeys.GetKeyName(key);
+                    else hotkey += "+" + GetKeyName(key);
                 }
 
                 return hotkey;
@@ -142,10 +142,10 @@ namespace MacroHotkey
                 {
                     if (first)
                     {
-                        hotkey = Hotkeys.GetValue(key);
+                        hotkey = GetValue(key);
                         first = false;
                     }
-                    else hotkey += "|" + Hotkeys.GetValue(key);
+                    else hotkey += "|" + GetValue(key);
                 }
 
                 return hotkey;
@@ -156,10 +156,16 @@ namespace MacroHotkey
 
         public static string GetKeyName(string keyValue)
         {
-            string keyString = ((Keys)Enum.Parse(typeof(Keys), keyValue)).ToString();
+            string keyString;
 
             switch (keyValue)
             {
+                case "8":
+                    keyString = "Backspace";
+                    break;
+                case "13":
+                    keyString = "Enter";
+                    break;
                 case "16":
                     keyString = "Shift";
                     break;
@@ -169,6 +175,84 @@ namespace MacroHotkey
                 case "18":
                     keyString = "Alt";
                     break;
+                case "20":
+                    keyString = "CapsLock";
+                    break;
+                case "27":
+                    keyString = "Esc";
+                    break;
+                case "34":
+                    keyString = "PageDown";
+                    break;
+                case "48":
+                    keyString = "0";
+                    break;
+                case "49":
+                    keyString = "1";
+                    break;
+                case "50":
+                    keyString = "2";
+                    break;
+                case "51":
+                    keyString = "3";
+                    break;
+                case "52":
+                    keyString = "4";
+                    break;
+                case "53":
+                    keyString = "5";
+                    break;
+                case "54":
+                    keyString = "6";
+                    break;
+                case "55":
+                    keyString = "7";
+                    break;
+                case "56":
+                    keyString = "8";
+                    break;
+                case "57":
+                    keyString = "9";
+                    break;
+                case "186":
+                    keyString = "¨";
+                    break;
+                case "187":
+                    keyString = "Plus";
+                    break;
+                case "188":
+                    keyString = ",";
+                    break;
+                case "189":
+                    keyString = "Minus";
+                    break;
+                case "190":
+                    keyString = ".";
+                    break;
+                case "191":
+                    keyString = "'";
+                    break;
+                case "192":
+                    keyString = "Ö";
+                    break;
+                case "219":
+                    keyString = "´";
+                    break;
+                case "220":
+                    keyString = "§";
+                    break;
+                case "221":
+                    keyString = "Å";
+                    break;
+                case "222":
+                    keyString = "Ä";
+                    break;
+                case "226":
+                    keyString = "<";
+                    break;
+                default:
+                    keyString = ((Keys)Enum.Parse(typeof(Keys), keyValue)).ToString();
+                    break;
             }
 
             return keyString;
@@ -176,10 +260,16 @@ namespace MacroHotkey
 
         public static string GetValue(string keyString)
         {
-            string keyValue = "";
+            string keyValue;
 
             switch (keyString)
             {
+                case "Backspace":
+                    keyValue = "8";
+                    break;
+                case "Enter":
+                    keyValue = "13";
+                    break;
                 case "Shift":
                     keyValue = "16";
                     break;
@@ -189,6 +279,81 @@ namespace MacroHotkey
                 case "Alt":
                     keyValue = "18";
                     break;
+                case "CapsLock":
+                    keyValue = "20";
+                    break;
+                case "Esc":
+                    keyValue = "27";
+                    break;
+                case "PageDown":
+                    keyValue = "34";
+                    break;
+                case "0":
+                    keyValue = "48";
+                    break;
+                case "1":
+                    keyValue = "49";
+                    break;
+                case "2":
+                    keyValue = "50";
+                    break;
+                case "3":
+                    keyValue = "51";
+                    break;
+                case "4":
+                    keyValue = "52";
+                    break;
+                case "5":
+                    keyValue = "53";
+                    break;
+                case "6":
+                    keyValue = "54";
+                    break;
+                case "7":
+                    keyValue = "55";
+                    break;
+                case "8":
+                    keyValue = "56";
+                    break;
+                case "9":
+                    keyValue = "57";
+                    break;
+                case "¨":
+                    keyValue = "186";
+                    break;
+                case "Plus":
+                    keyValue = "187";
+                    break;
+                case ",":
+                    keyValue = "188";
+                    break;
+                case "Minus":
+                    keyValue = "189";
+                    break;
+                case ".":
+                    keyValue = "190";
+                    break;
+                case "'":
+                    keyValue = "191";
+                    break;
+                case "Ö":
+                    keyValue = "192";
+                    break;
+                case "´":
+                    keyValue = "219";
+                    break;
+                case "§":
+                    keyValue = "220";
+                    break;
+                case "Å":
+                    keyValue = "221";
+                    break;
+                case "Ä":
+                    keyValue = "222";
+                    break;
+                case "<":
+                    keyValue = "226";
+                    break;
                 default:
                     keyValue = ((int)Enum.Parse(typeof(Keys), keyString, true)).ToString();
                     break;
@@ -196,6 +361,27 @@ namespace MacroHotkey
 
             return keyValue;
         }
+
+        public static string GetKeyNameSendKey(string keyValue)
+        {
+            string keyString = ((Keys)Enum.Parse(typeof(Keys), keyValue)).ToString();
+
+            switch (keyValue)
+            {
+                case "16":
+                    keyString = "+";
+                    break;
+                case "17":
+                    keyString = "^";
+                    break;
+                case "18":
+                    keyString = "%";
+                    break;
+            }
+
+            return keyString;
+        }
+
 
     }
 }

@@ -15,6 +15,8 @@ namespace MacroHotkey
             settings.SaveSetting("ColumnHotkeyWidth", ClmHotkey.Width.ToString());
             settings.SaveSetting("ColumnActionWidth", ClmAction.Width.ToString());
             settings.SaveSetting("HotkeysActive", CheckActive.Checked.ToString());
+            settings.SaveSetting("StartInTray", TSStartInTray.Checked.ToString());
+            settings.SaveSetting("CloseToTray", TSCloseToTray.Checked.ToString());
         }
 
         private void LoadSettings()
@@ -25,6 +27,8 @@ namespace MacroHotkey
             ClmHotkey.Width = settings.LoadSetting("ColumnHotkeyWidth", "int", "105");
             ClmAction.Width = settings.LoadSetting("ColumnActionWidth", "int", "250");
             CheckActive.Checked = settings.LoadSetting("HotkeysActive", "bool", "true");
+            TSStartInTray.Checked = settings.LoadSetting("StartInTray", "bool", "false");
+            TSCloseToTray.Checked = settings.LoadSetting("CloseToTray", "bool", "false");
         }
 
         private void SaveList()
