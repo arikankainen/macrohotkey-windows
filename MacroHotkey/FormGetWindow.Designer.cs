@@ -1,6 +1,6 @@
 ﻿namespace MacroHotkey
 {
-    partial class FormGetMouseLocation
+    partial class FormGetWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGetMouseLocation));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGetWindow));
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label1
             // 
@@ -41,11 +47,11 @@
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(311, 47);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Move mouse to desired position and press \'Enter\'";
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Activate desired window and press \'Enter\'";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // FormGetMouseLocation
+            // FormGetWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -56,19 +62,19 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormGetMouseLocation";
+            this.Name = "FormGetWindow";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Get Mouse Position";
+            this.Text = "Add ActivateWindow";
             this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGetMouseLocation_FormClosing);
-            this.Load += new System.EventHandler(this.FormGetMouseLocation_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGetWindow_FormClosing);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label1;
     }
 }

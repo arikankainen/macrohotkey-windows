@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,15 +11,92 @@ namespace MacroHotkey
 {
     public partial class Form1
     {
-        private async Task WaitMillisecondsAsync(int ms)
+        private void MacroTimerTick()
         {
-            await Task.Run(async () =>
+            if (macroCancelled)
             {
-                await Task.Delay(ms);
-            });
+                TimerMacro.Stop();
+                MacroCompleted();
+            }
+            else if (actionDelayType == ActionDelayType.DelayInitial)
+            {
+                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > DELAY_ON_START)
+                {
+                    TimerMacro.Stop();
+                    RunRow(macroRows[macroRow]);
+                }
+            }
+            else if (actionDelayType == ActionDelayType.DelayBetween)
+            {
+                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > DELAY_BETWEEN)
+                {
+                    TimerMacro.Stop();
+                    RunRow(macroRows[macroRow]);
+                }
+            }
+            else if (actionDelayType == ActionDelayType.DelayCustom)
+            {
+                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > actionDelay)
+                {
+                    TimerMacro.Stop();
+                    RunRow(macroRows[macroRow]);
+                }
+            }
+            else if (actionDelayType == ActionDelayType.None)
+            {
+                TimerMacro.Stop();
+                RunRow(macroRows[macroRow]);
+            }
         }
 
-        private int CalculateActionTotalTime(List<string> rows)
+        private void MacroStarted(string action)
+        {
+            if (action != null)
+            {
+                macroRunning = true;
+                CheckSelectedItems();
+                originalMousePosition = Cursor.Position;
+
+                macroCancelled = false;
+
+                macroRowCompletedTime = DateTime.Now;
+                macroRow = 0;
+
+                macroRows.Clear();
+                macroRows = action.Split(';').ToList();
+                
+                notification.TotalTime = CalculateMacroTotalTime(macroRows);
+                notification.ShowNotification();
+
+                timerIcon.Start();
+                TimerMacro.Start();
+            }
+        }
+
+        private void MacroCompleted()
+        {
+            TimerMacro.Stop();
+            timerIcon.Stop();
+
+            notification.HideNotification();
+            NotifyIcon1.Icon = this.Icon = Properties.Resources.mh;
+
+            macroRunning = false;
+
+            CheckSelectedItems();
+            Cursor.Position = originalMousePosition;
+        }
+
+        private void MacroRowCompleted()
+        {
+            macroRow++;
+            macroRowCompletedTime = DateTime.Now;
+
+            if (macroRows.Count <= macroRow) MacroCompleted();
+            else TimerMacro.Start();
+        }
+
+        private int CalculateMacroTotalTime(List<string> rows)
         {
             int totalTime = DELAY_ON_START;
 
@@ -27,8 +104,6 @@ namespace MacroHotkey
             {
                 if (row.Length > 0 && !row.StartsWith("#"))
                 {
-                    totalTime += DELAY_BETWEEN;
-
                     Regex regex = new Regex(@"(^.*?)\((.*)\)");
                     Match match = regex.Match(row.ToLower());
 
@@ -38,182 +113,305 @@ namespace MacroHotkey
                     if (command == "delay")
                     {
                         int.TryParse(value, out int delay);
-                        if (delay > 0 && delay < 60000) totalTime += delay;
+                        totalTime += delay;
                     }
+                    else totalTime += DELAY_BETWEEN;
                 }
             }
-            
+
             return totalTime;
         }
 
-        private async Task RunActionAsync(string action)
+        private void RunRow(string row)
         {
-            if (action != null)
+            Regex regex = new Regex(@"(^.*?)\((.*)\)");
+            Match match = regex.Match(row);
+
+            string command = match.Groups[1].Value.ToLower();
+            string value = match.Groups[2].Value;
+
+            if (command.StartsWith("#"))
             {
-                List<string> rows = action.Split(';').ToList<string>();
-                
-                notification.TotalTime = CalculateActionTotalTime(rows);
-                notification.ShowNotification();
-                timerIcon.Start();
-
-                cancel = false;
-
-                await WaitMillisecondsAsync(DELAY_ON_START);
-
-                foreach (string row in rows)
-                {
-                    if (row.Length > 0)
-                    {
-                        if (cancel) break;
-                        await RunRowAsync(row);
-                    }
-                }
+                command = null;
+                actionDelayType = ActionDelayType.None;
+            }
+            else
+            {
+                actionDelayType = ActionDelayType.DelayBetween;
             }
 
-            notification.HideNotification();
-            timerIcon.Stop();
-            running = false;
-            NotifyIcon1.Icon = this.Icon = Properties.Resources.mh;
+            switch (command)
+            {
+                case "pause":
+                    ActionPause();
+                    break;
+
+                case "delay":
+                    ActionDelay(value);
+                    break;
+
+                case "key":
+                    ActionKey(value);
+                    break;
+
+                case "pastetext":
+                    ActionPasteText(value);
+                    break;
+
+                case "typetext":
+                    ActionTypeText(value);
+                    break;
+
+                case "paste":
+                    ActionPaste(value);
+                    break;
+
+                case "mousedown":
+                    ActionMouseDown(value);
+                    break;
+
+                case "mouseup":
+                    ActionMouseUp(value);
+                    break;
+
+                case "mouseclick":
+                    ActionMouseClick(value);
+                    break;
+
+                case "mousemove":
+                    ActionMouseMove(value);
+                    break;
+
+                case "mouseposition":
+                    ActionMousePosition(value);
+                    break;
+
+                case "windowposition":
+                    ActionWindowPosition(value);
+                    break;
+
+                case "windowsize":
+                    ActionWindowSize(value);
+                    break;
+
+                case "activatewindow":
+                    ActionActivateWindow(value);
+                    break;
+            }
+
+            MacroRowCompleted();
         }
 
-        private async Task RunRowAsync(string row)
+        private void ActionPause()
+        {
+            if (actionDelayType != ActionDelayType.Pause)
+            {
+                actionDelayType = ActionDelayType.Pause;
+                notification.PauseProgress();
+            }
+            else
+            {
+                actionDelayType = ActionDelayType.DelayInitial;
+                macroRowCompletedTime = DateTime.Now;
+                notification.ContinueProgress();
+            }
+        }
+
+        private void ActionDelay(string value)
         {
             try
             {
-                if (row.StartsWith("#")) return;
+                int.TryParse(value, out int delay);
 
-                await WaitMillisecondsAsync(DELAY_BETWEEN);
-
-                Regex regex = new Regex(@"(^.*?)\((.*)\)");
-                Match match = regex.Match(row.ToLower());
-
-                string command = match.Groups[1].Value;
-                string value = match.Groups[2].Value;
-
-                if (command == "key")
+                if (delay > 0)
                 {
-                    try
-                    {
-                        SendKeys.SendWait(value);
-                    }
-                    catch { }
-                }
-
-                else if (command == "delay")
-                {
-                    try
-                    {
-                        int.TryParse(value, out int delay);
-
-                        if (delay > 0 && delay < 60000)
-                        {
-                            await WaitMillisecondsAsync(delay);
-                        }
-                    }
-                    catch { }
-                }
-
-                else if (command == "mousedown")
-                {
-                    try
-                    {
-                        if (value == "left") DoMouseDown(MouseButtons.Left);
-                        else if (value == "right") DoMouseDown(MouseButtons.Right);
-                        else if (value == "middle") DoMouseDown(MouseButtons.Middle);
-                    }
-                    catch { }
-                }
-
-                else if (command == "mouseup")
-                {
-                    try
-                    {
-                        if (value == "left") DoMouseUp(MouseButtons.Left);
-                        else if (value == "right") DoMouseUp(MouseButtons.Right);
-                        else if (value == "middle") DoMouseUp(MouseButtons.Middle);
-                    }
-                    catch { }
-                }
-
-                else if (command == "mouseclick")
-                {
-                    try
-                    {
-                        if (value == "left") DoMouseClick(MouseButtons.Left);
-                        else if (value == "right") DoMouseClick(MouseButtons.Right);
-                        else if (value == "middle") DoMouseClick(MouseButtons.Middle);
-                    }
-                    catch { }
-                }
-
-                else if (command == "mousemove")
-                {
-                    try
-                    {
-                        List<string> position = value.Split(',').ToList<string>();
-
-                        int.TryParse(position[0], out int x);
-                        int.TryParse(position[1], out int y);
-
-                        Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
-                    }
-                    catch { }
-                }
-
-                else if (command == "mouseposition")
-                {
-                    try
-                    {
-                        List<string> position = value.Split(',').ToList();
-
-                        int.TryParse(position[0], out int x);
-                        int.TryParse(position[1], out int y);
-
-                        string scr = position.Count > 2 ? position[2] : null;
-
-                        SetCursor(scr, x, y);
-                    }
-                    catch { }
-                }
-
-                else if (command == "mousemovemonitor")
-                {
-                    try
-                    {
-                        bool primary = false;
-                        int screenNumber = 1;
-
-                        if (value == "primary") primary = true;
-                        else int.TryParse(value, out screenNumber);
-
-                        Screen screen;
-                        if (primary) screen = Screen.PrimaryScreen;
-                        else screen = Screen.AllScreens[screenNumber - 1];
-
-                        Cursor.Position = screen.Bounds.Location;
-                    }
-                    catch { }
-                }
-
-                else if (command == "windowposition")
-                {
-                    try
-                    {
-                        List<string> position = value.Split(',').ToList();
-
-                        int.TryParse(position[0], out int x);
-                        int.TryParse(position[1], out int y);
-
-                        string scr = position.Count > 2 ? position[2] : null;
-
-                        WindowPosition(scr, x, y);
-                    }
-                    catch { }
+                    actionDelayType = ActionDelayType.DelayCustom;
+                    actionDelay = delay;
                 }
             }
-
             catch { }
         }
 
+        private void ActionKey(string value)
+        {
+            try
+            {
+                SendKeys.SendWait(value.ToLower());
+            }
+            catch { }
+        }
+
+        private void ActionPasteText(string value)
+        {
+            try
+            {
+                string clipboard = null;
+                if (Clipboard.ContainsText()) clipboard = Clipboard.GetText();
+
+                Clipboard.SetText(value);
+                SendKeys.Send("^v");
+                if (clipboard != null) Clipboard.SetText(clipboard);
+            }
+            catch { }
+        }
+
+        private void ActionPaste(string value)
+        {
+            try
+            {
+                string clipboard = null;
+                if (Clipboard.ContainsText()) clipboard = Clipboard.GetText();
+
+                int.TryParse(value, out int index);
+                
+                if (value != "") Clipboard.SetText(GetClipboardText(index - 1));
+                SendKeys.Send("^v");
+                if (clipboard != null && value != "") Clipboard.SetText(clipboard);
+            }
+            catch { }
+        }
+
+        private void ActionTypeText(string value)
+        {
+            try
+            {
+                for (int i = 0; i < value.Length; i++)
+                {
+                    string str = value.Substring(i, 1);
+
+                    str = str.Replace("{", "!!!_BRACE_OPEN_!!!");
+                    str = str.Replace("}", "!!!_BRACE_CLOSE_!!!");
+                    str = str.Replace("+", "{+}");
+                    str = str.Replace("%", "{%}");
+                    str = str.Replace("^", "{^}");
+                    str = str.Replace("~", "{~}");
+                    str = str.Replace("[", "{[}");
+                    str = str.Replace("]", "{]}");
+                    str = str.Replace("!!!_BRACE_OPEN_!!!", "{{}");
+                    str = str.Replace("!!!_BRACE_CLOSE_!!!", "{}}");
+
+                    SendKeys.Send(str);
+                }
+            }
+            catch { }
+        }
+
+        private void ActionMouseDown(string value)
+        {
+            try
+            {
+                if (value.ToLower() == "left") DoMouseDown(MouseButtons.Left);
+                else if (value.ToLower() == "right") DoMouseDown(MouseButtons.Right);
+                else if (value.ToLower() == "middle") DoMouseDown(MouseButtons.Middle);
+            }
+            catch { }
+        }
+
+        private void ActionMouseUp(string value)
+        {
+            try
+            {
+                if (value.ToLower() == "left") DoMouseUp(MouseButtons.Left);
+                else if (value.ToLower() == "right") DoMouseUp(MouseButtons.Right);
+                else if (value.ToLower() == "middle") DoMouseUp(MouseButtons.Middle);
+            }
+            catch { }
+        }
+
+        private void ActionMouseClick(string value)
+        {
+            try
+            {
+                if (value.ToLower() == "left") DoMouseClick(MouseButtons.Left);
+                else if (value.ToLower() == "right") DoMouseClick(MouseButtons.Right);
+                else if (value.ToLower() == "middle") DoMouseClick(MouseButtons.Middle);
+            }
+            catch { }
+        }
+
+        private void ActionMouseMove(string value)
+        {
+            try
+            {
+                List<string> position = value.Split(',').ToList();
+
+                int.TryParse(position[0], out int x);
+                int.TryParse(position[1], out int y);
+
+                Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
+            }
+            catch { }
+        }
+
+        private void ActionMousePosition(string value)
+        {
+            try
+            {
+                List<string> position = value.Split(',').ToList();
+
+                int.TryParse(position[0], out int x);
+                int.TryParse(position[1], out int y);
+
+                string scr = position.Count > 2 ? position[2] : null;
+
+                SetCursor(scr, x, y);
+            }
+            catch { }
+        }
+
+        private void ActionWindowPosition(string value)
+        {
+            try
+            {
+                List<string> position = value.Split(',').ToList();
+
+                int.TryParse(position[0], out int x);
+                int.TryParse(position[1], out int y);
+
+                string scr = position.Count > 2 ? position[2] : null;
+
+                WindowPosition(scr, x, y);
+            }
+            catch { }
+        }
+
+        private void ActionWindowSize(string value)
+        {
+            try
+            {
+                List<string> position = value.Split(',').ToList();
+
+                int.TryParse(position[0], out int width);
+                int.TryParse(position[1], out int height);
+
+                WindowSize(width, height);
+            }
+            catch { }
+        }
+
+        private void ActionActivateWindow(string value)
+        {
+            try
+            {
+                List<string> list = value.Split(',').ToList();
+
+                string process = list[0];
+                string title = list[1];
+
+                if (list.Count > 2)
+                {
+                    for (int i = 2; i < list.Count; i++)
+                    {
+                        title += "," + list[i];
+                    }
+                }
+
+                process = process.Trim();
+                title = title.Trim();
+
+                ActivateWindow(process, title);
+            }
+            catch { }
+        }
     }
 }

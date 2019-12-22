@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace MacroHotkey
@@ -7,7 +11,7 @@ namespace MacroHotkey
     public partial class Form1 : Form
     {
         private const int DELAY_ON_START = 500;
-        private const int DELAY_BETWEEN = 10;
+        private const int DELAY_BETWEEN = 100;
 
         private const int LIST_NAME = 0;
         private const int LIST_HOTKEY = 1;
@@ -16,22 +20,50 @@ namespace MacroHotkey
         private readonly FormNotification notification;
         private readonly Settings settings = new Settings();
         private readonly string listFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".lst");
+        private readonly string appDir = Path.GetDirectoryName(Application.ExecutablePath);
 
         private bool reallyClose = false;
-        private bool cancel = false;
-        private bool running = false;
+        private bool macroCancelled = false;
+        private bool macroRunning = false;
         private bool iconVisible = true;
+
+        private bool editing = false;
+
+        private Point originalMousePosition;
+        private DateTime macroRowCompletedTime;
+        private List<string> macroRows = new List<string>();
+        private int macroRow;
+        private long actionDelay;
+
+        private ActionDelayType actionDelayType;
+
+        private enum ActionDelayType
+        {
+            DelayInitial,
+            DelayBetween,
+            DelayCustom,
+            Pause,
+            None
+        }
 
         public Form1()
         {
             InitializeComponent();
-            AddLines();
 
+            labelVersion.Text = "v" + Assembly.GetEntryAssembly().GetName().Version.ToString();
+            toolStrip1.Renderer = new MySR();
             NotifyIcon1.ContextMenu = contextMenu1;
             LstActions.Sorting = SortOrder.Ascending;
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(hook_KeyPressedAsync);
 
             notification = new FormNotification();
+        }
+
+        private void CenterForm()
+        {
+            Screen screen = Screen.FromPoint(Cursor.Position);
+            this.Left = screen.WorkingArea.Left + (screen.WorkingArea.Size.Width / 2) - (this.Width / 2);
+            this.Top = screen.WorkingArea.Top + (screen.WorkingArea.Size.Height / 2) - (this.Height / 2) - 1;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -40,6 +72,7 @@ namespace MacroHotkey
             CheckSelectedItems();
             ReloadHotkeys();
             LoadSettings();
+            CenterForm();
 
             if (TSStartInTray.Checked) this.Opacity = 0;
         }
@@ -63,12 +96,15 @@ namespace MacroHotkey
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
+            editing = true;
+            CheckSelectedItems();
             hook.DisposeAllKeys();
 
             FormAddHotkey form = new FormAddHotkey();
             form.EditMode = false;
-            form.ShowDialog();
+            form.Show();
 
+            /*
             if (form.Result == DialogResult.OK)
             {
                 ListViewItem item = new ListViewItem(form.ActionName);
@@ -78,6 +114,29 @@ namespace MacroHotkey
                 LstActions.Items.Add(item);
             }
 
+            editing = false;
+            CheckSelectedItems();
+            ReloadHotkeys();
+            */
+        }
+
+        public void SaveAddForm(string name, string hotkey, string action, bool edit)
+        {
+            if (edit) LstActions.SelectedItems[0].Remove();
+
+            ListViewItem item = new ListViewItem(name);
+            item.SubItems.Add(hotkey);
+            item.SubItems.Add(action);
+            LstActions.Items.Add(item);
+            item.Selected = true;
+        }
+
+        public void EditFormClosed()
+        {
+            editing = false;
+            CheckSelectedItems();
+            //LstActions.Focus();
+            SaveList();
             ReloadHotkeys();
         }
 
@@ -85,6 +144,8 @@ namespace MacroHotkey
         {
             if (LstActions.SelectedItems.Count == 1)
             {
+                editing = true;
+                CheckSelectedItems();
                 hook.DisposeAllKeys();
 
                 FormAddHotkey form = new FormAddHotkey();
@@ -92,8 +153,9 @@ namespace MacroHotkey
                 form.ActionName = LstActions.SelectedItems[LIST_NAME].Text;
                 form.ActionHotkey = LstActions.SelectedItems[0].SubItems[LIST_HOTKEY].Text;
                 form.Action = LstActions.SelectedItems[0].SubItems[LIST_ACTION].Text;
-                form.ShowDialog();
+                form.Show();
 
+                /*
                 if (form.Result == DialogResult.OK)
                 {
                     LstActions.SelectedItems[0].Remove();
@@ -105,7 +167,10 @@ namespace MacroHotkey
                     LstActions.Items.Add(item);
                 }
 
+                editing = false;
+                CheckSelectedItems();
                 ReloadHotkeys();
+                */
             }
         }
 
@@ -114,7 +179,7 @@ namespace MacroHotkey
             if (LstActions.SelectedItems.Count == 1)
             {
                 string name = LstActions.SelectedItems[0].Text;
-                DialogResult result = MessageBox.Show("Delete selected macro?\n\n" + name, "Confirm delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show("Really delete selected macro?\n\n" + name, "Delete macro", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     int index = LstActions.SelectedItems[0].Index;
@@ -127,6 +192,11 @@ namespace MacroHotkey
             }
         }
 
+        private void BtnRunMacro_Click(object sender, EventArgs e)
+        {
+            RunMacro();
+        }
+
         private void LstActions_SelectedIndexChanged(object sender, EventArgs e)
         {
             CheckSelectedItems();
@@ -134,16 +204,44 @@ namespace MacroHotkey
 
         private void CheckSelectedItems()
         {
-            if (LstActions.SelectedItems.Count == 1)
+            if (LstActions.SelectedItems.Count == 1 && !macroRunning && !editing)
             {
                 BtnModify.Enabled = true;
                 BtnDelete.Enabled = true;
+                BtnRunMacro.Enabled = true;
             }
-
             else
             {
                 BtnModify.Enabled = false;
                 BtnDelete.Enabled = false;
+                BtnRunMacro.Enabled = false;
+            }
+
+            if (!macroRunning && !editing) BtnAdd.Enabled = true;
+            else BtnAdd.Enabled = false;
+
+            if (editing) LstActions.Enabled = false;
+            else LstActions.Enabled = true;
+
+            UpdateStatusbar();
+        }
+
+        private void UpdateStatusbar()
+        {
+            labelItems.Text = " " + LstActions.Items.Count.ToString() + " macros";
+            if (LstActions.SelectedItems.Count == 1)
+            {
+                string action = LstActions.SelectedItems[0].SubItems[LIST_ACTION].Text;
+                List<string> rows = action.Split(';').ToList();
+                double duration = CalculateMacroTotalTime(rows);
+
+                labelDuration.Image = Properties.Resources.macrohotkey_delay;
+                labelDuration.Text = " " + (duration / 1000).ToString() + " seconds";
+            }
+            else
+            {
+                labelDuration.Image = null;
+                labelDuration.Text = "";
             }
         }
 
@@ -162,6 +260,7 @@ namespace MacroHotkey
         {
             this.Opacity = 1;
             this.Show();
+            this.WindowState = FormWindowState.Normal;
         }
 
         private void MenuItemExit_Click(object sender, EventArgs e)
@@ -173,6 +272,11 @@ namespace MacroHotkey
         private void Form1_Shown(object sender, EventArgs e)
         {
             if (TSStartInTray.Checked) this.Hide();
+        }
+
+        private void TimerMacro_Tick(object sender, EventArgs e)
+        {
+            MacroTimerTick();
         }
 
         private void TimerIcon_Tick(object sender, EventArgs e)
@@ -206,5 +310,36 @@ namespace MacroHotkey
             if (TSStartInTray.Checked) TSStartInTray.Checked = false;
             else TSStartInTray.Checked = true;
         }
+
+        private void TSMinimizeOnRun_Click(object sender, EventArgs e)
+        {
+            if (TSMinimizeOnRun.Checked) TSMinimizeOnRun.Checked = false;
+            else TSMinimizeOnRun.Checked = true;
+        }
+
+        private void TSBackup_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(listFile))
+            {
+                string backupFile = Path.Combine(appDir, "macrohotkey_backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".lst");
+
+                if (File.Exists(backupFile)) File.Delete(backupFile);
+                File.Copy(listFile, backupFile);
+
+                MessageBox.Show("Macros backed up successfully!" + Environment.NewLine + Environment.NewLine + Path.GetFileName(backupFile), "Backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
+
+    // correcting a bug in the "system" renderer (white bottom line in toolstrip)
+    public class MySR : ToolStripSystemRenderer
+    {
+        public MySR() { }
+
+        protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+        {
+            //base.OnRenderToolStripBorder(e);
+        }
+    }
+
 }

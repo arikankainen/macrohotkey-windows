@@ -15,7 +15,7 @@ namespace MacroHotkey
     public partial class FormAddHotkey : Form
     {
         private Settings settings = new Settings();
-
+        
         private const string REPLACE_SEMICOLON = "###_SC_###";
         private const string REPLACE_PIPE = "###_PIPE_###";
 
@@ -61,7 +61,7 @@ namespace MacroHotkey
             {
                 if (value != null && value != "")
                 {
-                    txtAction.Text = value.Replace(";", Environment.NewLine).Replace(REPLACE_SEMICOLON, ";").Replace(REPLACE_PIPE, "|");
+                    txtAction.Text = value.Replace(";", Environment.NewLine).Replace(REPLACE_SEMICOLON, ";").Replace(REPLACE_PIPE, "|") + Environment.NewLine;
                 }
             }
         }
@@ -98,6 +98,7 @@ namespace MacroHotkey
         {
             SaveSettings();
             result = DialogResult.OK;
+            (Application.OpenForms["Form1"] as Form1).SaveAddForm(ActionName, ActionHotkey, Action, EditMode);
             this.Close();
         }
 
@@ -112,18 +113,28 @@ namespace MacroHotkey
             LoadSettings();
             CenterForm();
 
-            if (editMode) labelName.Text = "Edit macro";
-            else labelName.Text = "New macro";
+            //if (editMode) this.Text = "Edit Macro";
+            //else this.Text = "Add Macro";
         }
 
         private void FormAddHotkey_FormClosing(object sender, FormClosingEventArgs e)
         {
+            (Application.OpenForms["Form1"] as Form1).EditFormClosed();
         }
 
         private void FormAddHotkey_Shown(object sender, EventArgs e)
         {
-            txtName.Focus();
-            txtName.SelectionStart = txtName.TextLength;
+            if (txtName.Text == "")
+            {
+                txtName.Focus();
+                txtName.SelectionStart = txtName.TextLength;
+            }
+            else
+            {
+                txtAction.Focus();
+                txtAction.SelectionStart = 0;
+                txtAction.SelectionLength = 0;
+            }
         }
 
         private void txtHotkey_Enter(object sender, EventArgs e)
@@ -158,6 +169,7 @@ namespace MacroHotkey
             }
 
             listKeyValuesTemp.Clear();
+            if (txtHotkey.Text == "Esc") txtHotkey.Text = "";
         }
 
         private void txtHotkey_KeyDown(object sender, KeyEventArgs e)
@@ -188,14 +200,14 @@ namespace MacroHotkey
                 else txtHotkey.Text = Hotkeys.GetKeyName(listKeyValuesTemp[i]);
             }
 
-            if (!acceptMore) labelName.Focus();
+            if (!acceptMore) label1.Focus();
         }
 
         private void txtHotkey_KeyUp(object sender, KeyEventArgs e)
         {
             if (acceptMore) txtHotkey.Text = txtOrig;
             listKeyValuesTemp.Clear();
-            if (txtChanged) labelName.Focus();
+            if (txtChanged) label1.Focus();
         }
 
         private void timerMouse_Tick(object sender, EventArgs e)
@@ -232,22 +244,37 @@ namespace MacroHotkey
 
         private void AddText(string text, int pos)
         {
+            if (pos > 0) pos += 2;
             int scrollPosition = GetScrollPos(txtAction.Handle, 1);
 
             bool replace = txtAction.SelectionLength > 0 ? true : false;
 
-            if (pos == 0 && !replace) text += Environment.NewLine;
-            
             int selectionStart = txtAction.SelectionStart;
             int selectionLength = txtAction.SelectionLength;
 
             if (replace) txtAction.Text = txtAction.Text.Remove(selectionStart, selectionLength);
             else selectionStart = txtAction.GetFirstCharIndexFromLine(txtAction.GetLineFromCharIndex(selectionStart));
 
+            int character = 0;
+
+            try
+            {
+                string sub = txtAction.Text.Substring(txtAction.GetFirstCharIndexFromLine(txtAction.GetLineFromCharIndex(selectionStart)), 1);
+                char[] c = sub.ToCharArray();
+                character = (int)c[0];
+            }
+            catch { }
+
+            if (!replace && character != 13) text += Environment.NewLine;
+            if (character == 13 && pos == 0) pos -= 2;
+
             txtAction.Text = txtAction.Text.Insert(selectionStart, text);
-            txtAction.SelectionStart = selectionStart + text.Length - pos;
+            
+            int selection = selectionStart + text.Length - pos;
+            if (selection < 0) selection = 0;
+
+            txtAction.SelectionStart = selection;
             txtAction.Focus();
-            //txtAction.ScrollToCaret();
 
             SetScrollPos(txtAction.Handle, 1, scrollPosition, true);
             SendMessage(txtAction.Handle, EM_LINESCROLL, 0, scrollPosition);
@@ -264,21 +291,29 @@ namespace MacroHotkey
 
         private void BtnMousePositionMonitor_Click(object sender, EventArgs e)
         {
+            //this.WindowState = FormWindowState.Minimized;
             FormGetMouseLocation form = new FormGetMouseLocation();
+            form.WindowTitle = "Add MousePosition";
             form.ShowDialog();
             if (form.Result == DialogResult.OK) AddText("MousePosition(" + form.PositionRelative.X.ToString() + "," + form.PositionRelative.Y.ToString() + "," + form.Monitor + ")");
             form.Dispose();
 
+            //this.WindowState = FormWindowState.Normal;
+            txtAction.Focus();
             this.Activate();
         }
 
         private void BtnMousePosition_Click(object sender, EventArgs e)
         {
+            //this.WindowState = FormWindowState.Minimized;
             FormGetMouseLocation form = new FormGetMouseLocation();
+            form.WindowTitle = "Add MousePosition";
             form.ShowDialog();
             if (form.Result == DialogResult.OK) AddText("MousePosition(" + form.PositionAbsolute.X.ToString() + "," + form.PositionAbsolute.Y.ToString() + ")");
             form.Dispose();
 
+            //this.WindowState = FormWindowState.Normal;
+            txtAction.Focus();
             this.Activate();
         }
 
@@ -312,12 +347,80 @@ namespace MacroHotkey
             AddText("MouseUp(Left)");
         }
 
+        private void BtnWindowPositionMonitor_Click(object sender, EventArgs e)
+        {
+            //this.WindowState = FormWindowState.Minimized;
+            FormGetMouseLocation form = new FormGetMouseLocation();
+            form.WindowTitle = "Add WindowPosition";
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("WindowPosition(" + form.PositionRelative.X.ToString() + "," + form.PositionRelative.Y.ToString() + "," + form.Monitor + ")");
+            form.Dispose();
+
+            //this.WindowState = FormWindowState.Normal;
+            txtAction.Focus();
+            this.Activate();
+        }
+
+        private void BtnWindowPosition_Click(object sender, EventArgs e)
+        {
+            //this.WindowState = FormWindowState.Minimized;
+            FormGetMouseLocation form = new FormGetMouseLocation();
+            form.WindowTitle = "Add WindowPosition";
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("WindowPosition(" + form.PositionAbsolute.X.ToString() + "," + form.PositionAbsolute.Y.ToString() + ")");
+            form.Dispose();
+
+            //this.WindowState = FormWindowState.Normal;
+            txtAction.Focus();
+            this.Activate();
+        }
+
+
+        private void BtnActivateWindow_Click(object sender, EventArgs e)
+        {
+            //this.WindowState = FormWindowState.Minimized;
+            FormGetWindow form = new FormGetWindow();
+            form.ShowDialog();
+            if (form.Result == DialogResult.OK) AddText("ActivateWindow(" + form.WindowProcess + "," + form.WindowTitle + ")");
+            form.Dispose();
+
+            //this.WindowState = FormWindowState.Normal;
+            txtAction.Focus();
+            this.Activate();
+        }
+
+        private void BtnWindowSize_Click(object sender, EventArgs e)
+        {
+            AddText("WindowSize()", 1);
+        }
+
+        private void BtnTypeText_Click(object sender, EventArgs e)
+        {
+            AddText("TypeText()", 1);
+        }
+
+        private void BtnPasteText_Click(object sender, EventArgs e)
+        {
+            AddText("PasteText()", 1);
+        }
+
+        private void BtnCopy_Click(object sender, EventArgs e)
+        {
+            AddText("Copy()");
+        }
+
+        private void BtnPaste_Click(object sender, EventArgs e)
+        {
+            AddText("Paste()", 1);
+        }
+
         private void BtnKey_Click(object sender, EventArgs e)
         {
             FormGetKey form = new FormGetKey();
             form.ShowDialog();
             if (form.Result == DialogResult.OK) AddText("Key(" + form.Keystring + ")");
             form.Dispose();
+            txtAction.Focus();
         }
 
         private void BtnKey1_Click(object sender, EventArgs e)
@@ -333,6 +436,11 @@ namespace MacroHotkey
         private void BtnKey3_Click(object sender, EventArgs e)
         {
             AddText("Key(" + TxtKey3.Text + ")");
+        }
+
+        private void BtnPause_Click(object sender, EventArgs e)
+        {
+            AddText("Pause()");
         }
 
         private void BtnDelay_Click(object sender, EventArgs e)
@@ -385,16 +493,6 @@ namespace MacroHotkey
             BtnDelay3.Text = "Delay(" + TxtDelay3.Text.Trim() + ")";
         }
 
-        private void BtnWindowPositionMonitor_Click(object sender, EventArgs e)
-        {
-            FormGetMouseLocation form = new FormGetMouseLocation();
-            form.ShowDialog();
-            if (form.Result == DialogResult.OK) AddText("WindowPosition(" + form.PositionRelative.X.ToString() + "," + form.PositionRelative.Y.ToString() + "," + form.Monitor + ")");
-            form.Dispose();
-
-            this.Activate();
-        }
-
         private void SaveSettings()
         {
             if (this.Width >= this.MinimumSize.Width) settings.SaveSetting("MacroWidth", this.Width.ToString());
@@ -410,11 +508,11 @@ namespace MacroHotkey
 
         private void LoadSettings()
         {
-            this.Width = settings.LoadSetting("MacroWidth", "int", "713");
-            this.Height = settings.LoadSetting("MacroHeight", "int", "745");
-
-            TxtKey1.Text = settings.LoadSetting("CustomKey1", "string", "^C");
-            TxtKey2.Text = settings.LoadSetting("CustomKey2", "string", "^V");
+            this.Width = settings.LoadSetting("MacroWidth", "int", "724");
+            this.Height = settings.LoadSetting("MacroHeight", "int", "851");
+            
+            TxtKey1.Text = settings.LoadSetting("CustomKey1", "string", "{ESC}");
+            TxtKey2.Text = settings.LoadSetting("CustomKey2", "string", "{TAB}");
             TxtKey3.Text = settings.LoadSetting("CustomKey3", "string", "{ENTER}");
             TxtDelay1.Text = settings.LoadSetting("CustomDelay1", "string", "500");
             TxtDelay2.Text = settings.LoadSetting("CustomDelay2", "string", "1000");
@@ -432,7 +530,7 @@ namespace MacroHotkey
             string command = match.Groups[1].Value;
             string value = match.Groups[2].Value;
 
-            if (command == "mouseposition")
+            if (command == "mouseposition" || command == "windowposition")
             {
                 try
                 {
@@ -489,6 +587,5 @@ namespace MacroHotkey
                 return null;
             }
         }
-
     }
 }

@@ -14,6 +14,8 @@ namespace MacroHotkey
     {
         private KeyboardHook hook = new KeyboardHook();
 
+        public string WindowTitle { get; set; }
+
         private string monitor;
 
         public string Monitor
@@ -67,6 +69,11 @@ namespace MacroHotkey
         private void FormGetMouseLocation_FormClosing(object sender, FormClosingEventArgs e)
         {
             hook.DisposeAllKeys();
+        }
+
+        private void FormGetMouseLocation_Load(object sender, EventArgs e)
+        {
+            this.Text = WindowTitle;
         }
     }
 }

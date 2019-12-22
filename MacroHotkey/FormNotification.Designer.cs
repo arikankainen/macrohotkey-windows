@@ -42,7 +42,7 @@
             this.LabelName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelName.Location = new System.Drawing.Point(-1, 2);
             this.LabelName.Name = "LabelName";
-            this.LabelName.Size = new System.Drawing.Size(199, 34);
+            this.LabelName.Size = new System.Drawing.Size(222, 34);
             this.LabelName.TabIndex = 0;
             this.LabelName.Text = " Running macro...";
             this.LabelName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -54,9 +54,9 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(-1, 40);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(199, 17);
+            this.label1.Size = new System.Drawing.Size(222, 30);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Press Ctrl-Break to cancel";
+            this.label1.Text = "Press \'Ctrl-Break\' to cancel \r\nor \'Break\' to pause/continue";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // timer1
@@ -68,10 +68,10 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(3, 66);
+            this.progressBar1.Location = new System.Drawing.Point(3, 81);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.ProgressText = null;
-            this.progressBar1.Size = new System.Drawing.Size(192, 8);
+            this.progressBar1.Size = new System.Drawing.Size(215, 8);
             this.progressBar1.TabIndex = 2;
             // 
             // FormNotification
@@ -79,7 +79,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(197, 77);
+            this.ClientSize = new System.Drawing.Size(220, 92);
             this.ControlBox = false;
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);

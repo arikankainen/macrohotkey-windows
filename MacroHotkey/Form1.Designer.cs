@@ -30,60 +30,39 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.BtnAdd = new System.Windows.Forms.Button();
-            this.BtnModify = new System.Windows.Forms.Button();
-            this.BtnDelete = new System.Windows.Forms.Button();
             this.NotifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.CheckActive = new System.Windows.Forms.CheckBox();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuItemOpen = new System.Windows.Forms.MenuItem();
             this.menuItemExit = new System.Windows.Forms.MenuItem();
             this.timerIcon = new System.Windows.Forms.Timer(this.components);
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSCloseToTray = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSStartInTray = new System.Windows.Forms.ToolStripMenuItem();
+            this.TimerMacro = new System.Windows.Forms.Timer(this.components);
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.BtnAdd = new System.Windows.Forms.ToolStripButton();
+            this.BtnModify = new System.Windows.Forms.ToolStripButton();
+            this.BtnDelete = new System.Windows.Forms.ToolStripButton();
+            this.BtnRunMacro = new System.Windows.Forms.ToolStripButton();
+            this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.TSBackup = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.TSExit = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.TSCloseToTray = new System.Windows.Forms.MenuItem();
+            this.TSStartInTray = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.TSMinimizeOnRun = new System.Windows.Forms.MenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.labelItems = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelDuration = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelVersion = new System.Windows.Forms.ToolStripStatusLabel();
             this.LstActions = new MacroHotkey.VisualStylesListView();
             this.ClmName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmHotkey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.menuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // BtnAdd
-            // 
-            this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnAdd.Location = new System.Drawing.Point(24, 335);
-            this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(75, 23);
-            this.BtnAdd.TabIndex = 24;
-            this.BtnAdd.Text = "Add";
-            this.BtnAdd.UseVisualStyleBackColor = true;
-            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
-            // 
-            // BtnModify
-            // 
-            this.BtnModify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnModify.Location = new System.Drawing.Point(105, 335);
-            this.BtnModify.Name = "BtnModify";
-            this.BtnModify.Size = new System.Drawing.Size(75, 23);
-            this.BtnModify.TabIndex = 25;
-            this.BtnModify.Text = "Modify";
-            this.BtnModify.UseVisualStyleBackColor = true;
-            this.BtnModify.Click += new System.EventHandler(this.BtnModify_Click);
-            // 
-            // BtnDelete
-            // 
-            this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnDelete.Location = new System.Drawing.Point(186, 335);
-            this.BtnDelete.Name = "BtnDelete";
-            this.BtnDelete.Size = new System.Drawing.Size(75, 23);
-            this.BtnDelete.TabIndex = 26;
-            this.BtnDelete.Text = "Delete";
-            this.BtnDelete.UseVisualStyleBackColor = true;
-            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
             // NotifyIcon1
             // 
@@ -91,19 +70,6 @@
             this.NotifyIcon1.Text = "Macro Hotkey";
             this.NotifyIcon1.Visible = true;
             this.NotifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1_MouseDoubleClick);
-            // 
-            // CheckActive
-            // 
-            this.CheckActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CheckActive.AutoSize = true;
-            this.CheckActive.Checked = true;
-            this.CheckActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CheckActive.Location = new System.Drawing.Point(449, 339);
-            this.CheckActive.Name = "CheckActive";
-            this.CheckActive.Size = new System.Drawing.Size(97, 17);
-            this.CheckActive.TabIndex = 27;
-            this.CheckActive.Text = "Hotkeys active";
-            this.CheckActive.UseVisualStyleBackColor = true;
             // 
             // contextMenu1
             // 
@@ -128,54 +94,178 @@
             this.timerIcon.Interval = 500;
             this.timerIcon.Tick += new System.EventHandler(this.TimerIcon_Tick);
             // 
-            // menuStrip1
+            // TimerMacro
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.settingsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(570, 24);
-            this.menuStrip1.TabIndex = 28;
-            this.menuStrip1.Text = "menuStrip1";
+            this.TimerMacro.Interval = 50;
+            this.TimerMacro.Tick += new System.EventHandler(this.TimerMacro_Tick);
             // 
-            // fileToolStripMenuItem
+            // toolStrip1
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BtnAdd,
+            this.BtnModify,
+            this.BtnDelete,
+            this.BtnRunMacro});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 15, 1, 0);
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(570, 38);
+            this.toolStrip1.TabIndex = 30;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // BtnAdd
+            // 
+            this.BtnAdd.Image = ((System.Drawing.Image)(resources.GetObject("BtnAdd.Image")));
+            this.BtnAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnAdd.Margin = new System.Windows.Forms.Padding(24, 1, 0, 2);
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(49, 20);
+            this.BtnAdd.Text = "Add";
+            this.BtnAdd.ToolTipText = "Add new macro";
+            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
+            // 
+            // BtnModify
+            // 
+            this.BtnModify.Image = ((System.Drawing.Image)(resources.GetObject("BtnModify.Image")));
+            this.BtnModify.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnModify.Margin = new System.Windows.Forms.Padding(10, 1, 0, 2);
+            this.BtnModify.Name = "BtnModify";
+            this.BtnModify.Size = new System.Drawing.Size(47, 20);
+            this.BtnModify.Text = "Edit";
+            this.BtnModify.ToolTipText = "Edit selected macro";
+            this.BtnModify.Click += new System.EventHandler(this.BtnModify_Click);
+            // 
+            // BtnDelete
+            // 
+            this.BtnDelete.Image = ((System.Drawing.Image)(resources.GetObject("BtnDelete.Image")));
+            this.BtnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnDelete.Margin = new System.Windows.Forms.Padding(10, 1, 0, 2);
+            this.BtnDelete.Name = "BtnDelete";
+            this.BtnDelete.Size = new System.Drawing.Size(60, 20);
+            this.BtnDelete.Text = "Delete";
+            this.BtnDelete.ToolTipText = "Delete selected macro";
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
+            // 
+            // BtnRunMacro
+            // 
+            this.BtnRunMacro.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.BtnRunMacro.Image = ((System.Drawing.Image)(resources.GetObject("BtnRunMacro.Image")));
+            this.BtnRunMacro.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnRunMacro.Margin = new System.Windows.Forms.Padding(0, 1, 24, 2);
+            this.BtnRunMacro.Name = "BtnRunMacro";
+            this.BtnRunMacro.Size = new System.Drawing.Size(48, 20);
+            this.BtnRunMacro.Text = "Run";
+            this.BtnRunMacro.ToolTipText = "Run selected macro";
+            this.BtnRunMacro.Click += new System.EventHandler(this.BtnRunMacro_Click);
+            // 
+            // mainMenu1
+            // 
+            this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem1,
+            this.menuItem2});
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 0;
+            this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.TSBackup,
+            this.menuItem3,
             this.TSExit});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.menuItem1.Text = "File";
+            // 
+            // TSBackup
+            // 
+            this.TSBackup.Index = 0;
+            this.TSBackup.Text = "Create backup of all macros";
+            this.TSBackup.Click += new System.EventHandler(this.TSBackup_Click);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 1;
+            this.menuItem3.Text = "-";
             // 
             // TSExit
             // 
-            this.TSExit.Name = "TSExit";
-            this.TSExit.Size = new System.Drawing.Size(180, 22);
+            this.TSExit.Index = 2;
             this.TSExit.Text = "Exit";
             this.TSExit.Click += new System.EventHandler(this.TSExit_Click);
             // 
-            // settingsToolStripMenuItem
+            // menuItem2
             // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItem2.Index = 1;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.TSCloseToTray,
-            this.TSStartInTray});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
+            this.TSStartInTray,
+            this.menuItem5,
+            this.TSMinimizeOnRun});
+            this.menuItem2.Text = "Settings";
             // 
             // TSCloseToTray
             // 
-            this.TSCloseToTray.Name = "TSCloseToTray";
-            this.TSCloseToTray.Size = new System.Drawing.Size(180, 22);
+            this.TSCloseToTray.Index = 0;
             this.TSCloseToTray.Text = "Close to tray";
             this.TSCloseToTray.Click += new System.EventHandler(this.TSCloseToTray_Click);
             // 
             // TSStartInTray
             // 
-            this.TSStartInTray.Name = "TSStartInTray";
-            this.TSStartInTray.Size = new System.Drawing.Size(180, 22);
+            this.TSStartInTray.Index = 1;
             this.TSStartInTray.Text = "Start in tray";
             this.TSStartInTray.Click += new System.EventHandler(this.TSStartInTray_Click);
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 2;
+            this.menuItem5.Text = "-";
+            // 
+            // TSMinimizeOnRun
+            // 
+            this.TSMinimizeOnRun.Index = 3;
+            this.TSMinimizeOnRun.Text = "Minimize when using \'Run\' button";
+            this.TSMinimizeOnRun.Click += new System.EventHandler(this.TSMinimizeOnRun_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.labelItems,
+            this.labelDuration,
+            this.toolStripStatusLabel2,
+            this.labelVersion});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 349);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(570, 22);
+            this.statusStrip1.TabIndex = 31;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // labelItems
+            // 
+            this.labelItems.Image = ((System.Drawing.Image)(resources.GetObject("labelItems.Image")));
+            this.labelItems.Margin = new System.Windows.Forms.Padding(10, 3, 0, 2);
+            this.labelItems.Name = "labelItems";
+            this.labelItems.Size = new System.Drawing.Size(61, 17);
+            this.labelItems.Text = "0 items";
+            // 
+            // labelDuration
+            // 
+            this.labelDuration.Image = ((System.Drawing.Image)(resources.GetObject("labelDuration.Image")));
+            this.labelDuration.Margin = new System.Windows.Forms.Padding(15, 3, 0, 2);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Size = new System.Drawing.Size(75, 17);
+            this.labelDuration.Text = "0 seconds";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(348, 17);
+            this.toolStripStatusLabel2.Spring = true;
+            // 
+            // labelVersion
+            // 
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(46, 17);
+            this.labelVersion.Text = "v0.0.0.0";
+            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LstActions
             // 
@@ -186,13 +276,13 @@
             this.ClmName,
             this.ClmHotkey,
             this.ClmAction});
+            this.LstActions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LstActions.FullRowSelect = true;
             this.LstActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.LstActions.HideSelection = false;
-            this.LstActions.Location = new System.Drawing.Point(24, 48);
+            this.LstActions.Location = new System.Drawing.Point(24, 44);
             this.LstActions.MultiSelect = false;
             this.LstActions.Name = "LstActions";
-            this.LstActions.Size = new System.Drawing.Size(522, 248);
+            this.LstActions.Size = new System.Drawing.Size(522, 285);
             this.LstActions.TabIndex = 23;
             this.LstActions.UseCompatibleStateImageBehavior = false;
             this.LstActions.View = System.Windows.Forms.View.Details;
@@ -219,14 +309,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(570, 371);
-            this.Controls.Add(this.CheckActive);
-            this.Controls.Add(this.BtnDelete);
-            this.Controls.Add(this.BtnModify);
-            this.Controls.Add(this.BtnAdd);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.LstActions);
-            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.Menu = this.mainMenu1;
             this.MinimumSize = new System.Drawing.Size(586, 410);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
@@ -235,8 +323,10 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,24 +334,35 @@
 
         #endregion
         private VisualStylesListView LstActions;
-        private System.Windows.Forms.Button BtnAdd;
-        private System.Windows.Forms.Button BtnModify;
-        private System.Windows.Forms.Button BtnDelete;
         private System.Windows.Forms.ColumnHeader ClmName;
         private System.Windows.Forms.ColumnHeader ClmHotkey;
         private System.Windows.Forms.NotifyIcon NotifyIcon1;
-        private System.Windows.Forms.CheckBox CheckActive;
         private System.Windows.Forms.ColumnHeader ClmAction;
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuItemOpen;
         private System.Windows.Forms.MenuItem menuItemExit;
         private System.Windows.Forms.Timer timerIcon;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem TSExit;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem TSCloseToTray;
-        private System.Windows.Forms.ToolStripMenuItem TSStartInTray;
+        private System.Windows.Forms.Timer TimerMacro;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton BtnDelete;
+        private System.Windows.Forms.ToolStripButton BtnAdd;
+        private System.Windows.Forms.ToolStripButton BtnModify;
+        private System.Windows.Forms.ToolStripButton BtnRunMacro;
+        private System.Windows.Forms.MainMenu mainMenu1;
+        private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.MenuItem TSBackup;
+        private System.Windows.Forms.MenuItem TSExit;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem TSCloseToTray;
+        private System.Windows.Forms.MenuItem TSStartInTray;
+        private System.Windows.Forms.MenuItem TSMinimizeOnRun;
+        private System.Windows.Forms.MenuItem menuItem5;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel labelItems;
+        private System.Windows.Forms.ToolStripStatusLabel labelVersion;
+        private System.Windows.Forms.ToolStripStatusLabel labelDuration;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.MenuItem menuItem3;
     }
 }
 

@@ -14,7 +14,6 @@ namespace MacroHotkey
 {
     public partial class FormNotification : Form
     {
-        
         [DllImport("user32.dll")]
         static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
@@ -45,6 +44,9 @@ namespace MacroHotkey
 
         private DateTime startTime;
 
+        private int elapsedTime;
+
+
         public FormNotification()
         {
             InitializeComponent();
@@ -55,6 +57,9 @@ namespace MacroHotkey
 
         public void ShowNotification()
         {
+            LabelName.ForeColor = Color.White;
+            LabelName.Text = " Running macro...";
+
             Screen screen = Screen.PrimaryScreen;
             this.Left = (screen.Bounds.Location.X + screen.Bounds.Width / 2) - (this.Width / 2);
             this.Top = screen.Bounds.Location.Y;
@@ -64,7 +69,7 @@ namespace MacroHotkey
             progressBar1.Value = 0;
 
             startTime = DateTime.Now;
-            timer1.Start();
+            if (!timer1.Enabled) timer1.Start();
 
             FadeInAsync();
         }
@@ -75,6 +80,30 @@ namespace MacroHotkey
             FadeOutAsync();
         }
 
+        public void PauseProgress()
+        {
+            LabelName.ForeColor = Color.Red;
+            LabelName.Text = "Macro paused";
+            timer1.Stop();
+        }
+
+        public void ContinueProgress()
+        {
+            startTime = DateTime.Now.AddMilliseconds(-elapsedTime);
+            LabelName.ForeColor = Color.White;
+            LabelName.Text = " Running macro...";
+            timer1.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            elapsedTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
+            if (elapsedTime < 0) elapsedTime = 0;
+            if (elapsedTime > TotalTime) elapsedTime = TotalTime;
+
+            progressBar1.Value = elapsedTime;
+        }
+
         private async Task FadeInAsync()
         {
             this.Opacity = 0;
@@ -82,7 +111,6 @@ namespace MacroHotkey
 
             for (double i = 0.0; i <= setOpacity; i += setFadeSpeed)
             {
-                //Thread.Sleep(10);
                 await WaitMillisecondsAsync(10);
                 this.Opacity = i;
                 Application.DoEvents();
@@ -95,7 +123,6 @@ namespace MacroHotkey
 
             for (double i = setOpacity; i >= 0.0; i -= setFadeSpeed)
             {
-                //Thread.Sleep(10);
                 await WaitMillisecondsAsync(10);
                 this.Opacity = i;
                 Application.DoEvents();
@@ -112,15 +139,5 @@ namespace MacroHotkey
             });
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            TimeSpan elapsed = DateTime.Now - startTime;
-            int value = (int)elapsed.TotalMilliseconds;
-            
-            if (value > progressBar1.Maximum) value = progressBar1.Maximum;
-            else if (value < 0) value = 0;
-            
-            progressBar1.Value = value;
-        }
     }
 }

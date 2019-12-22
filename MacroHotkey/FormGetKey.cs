@@ -107,5 +107,10 @@ namespace MacroHotkey
 
             return second;
         }
+
+        private void FormGetKey_Shown(object sender, EventArgs e)
+        {
+            comboBox1.Focus();
+        }
     }
 }

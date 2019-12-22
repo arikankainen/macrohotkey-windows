@@ -34,6 +34,28 @@
   <PropertyGroup>
     <ApplicationIcon>mh.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -64,7 +86,7 @@
     <Compile Include="Form1_Action.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1_KeyboardMouse.cs">
+    <Compile Include="Form1_KeyboardMouseWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1_LoadSave.cs">
@@ -87,6 +109,12 @@
     </Compile>
     <Compile Include="FormGetMouseLocation.Designer.cs">
       <DependentUpon>FormGetMouseLocation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGetWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGetWindow.Designer.cs">
+      <DependentUpon>FormGetWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="FormNotification.cs">
       <SubType>Form</SubType>
@@ -114,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormGetMouseLocation.resx">
       <DependentUpon>FormGetMouseLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGetWindow.resx">
+      <DependentUpon>FormGetWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormNotification.resx">
       <DependentUpon>FormNotification.cs</DependentUpon>
@@ -143,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="blank.ico" />
+    <None Include="icons\macrohotkey_delay.png" />
     <Content Include="mh.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

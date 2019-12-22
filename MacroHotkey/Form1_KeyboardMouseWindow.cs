@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +23,34 @@ namespace MacroHotkey
 
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        private string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32")]
+        private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
+
+        private IntPtr GetWindowProcessID(IntPtr hwnd)
+        {
+            GetWindowThreadProcessId(hwnd, out IntPtr pid);
+            return pid;
+        }
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
@@ -103,6 +133,59 @@ namespace MacroHotkey
             catch { }
         }
 
+        private void WindowSize(int width, int height)
+        {
+            try
+            {
+                IntPtr handle = GetForegroundWindow();
+                SetWindowPos(handle, 0, 0, 0, width, height, SWP_NOZORDER | SWP_NOMOVE | SWP_SHOWWINDOW);
+            }
+            catch { }
+        }
+
+        private void ActivateWindow(string process, string title)
+        {
+            if (process != "" && title != "")
+            {
+                foreach (Process prc in Process.GetProcessesByName(process))
+                {
+                    if (prc.MainWindowTitle.Contains(title))
+                    {
+                        SetForegroundWindow(prc.MainWindowHandle);
+                        break;
+                    }
+                }
+            }
+            else if (process != "")
+            {
+                try
+                {
+                    var prc = Process.GetProcessesByName(process);
+
+                    if (prc.Length > 0)
+                    {
+                        SetForegroundWindow(prc[0].MainWindowHandle);
+                    }
+                }
+                catch { }
+            }
+            else if (title != "")
+            {
+                try
+                {
+                    foreach (Process prc in Process.GetProcesses())
+                    {
+                        if (prc.MainWindowTitle.Contains(title))
+                        {
+                            SetForegroundWindow(prc.MainWindowHandle);
+                            break;
+                        }
+                    }
+                }
+                catch { }
+            }
+        }
+
         private void SetCursor(string scr, int x, int y)
         {
             try
@@ -154,22 +237,21 @@ namespace MacroHotkey
 
             foreach (ListViewItem item in LstActions.Items)
             {
-                string key = item.SubItems[LIST_HOTKEY].Text;
-                string keyList = Hotkeys.GetHotkeyKey(key);
-                string modList = Hotkeys.GetHotkeyModifiers(key);
+                string keystroke = item.SubItems[LIST_HOTKEY].Text;
+                string mod = Hotkeys.GetHotkeyModifiers(keystroke);
+                string key = Hotkeys.GetHotkeyKey(keystroke);
 
-                HookKey(modList, keyList);
+                HookKey(mod, key);
             }
 
             HookKey("Ctrl", "Cancel");
+            HookKey("", "Pause");
         }
 
         private void HookKey(string mod, string key)
         {
-            //if (string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)0, (Keys)Enum.Parse(typeof(Keys), key));
-            //else if (!string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)Hotkeys.GetGlobalHotkeyModNumber(mod), (Keys)Enum.Parse(typeof(Keys), key));
-
-            int.TryParse(Hotkeys.GetValue(key), out int keycode);
+            int keycode = 0;
+            if (!string.IsNullOrEmpty(key)) int.TryParse(Hotkeys.GetValue(key), out keycode);
 
             if (string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)0, (Keys)keycode);
             else if (!string.IsNullOrEmpty(mod) && !string.IsNullOrEmpty(key)) hook.RegisterHotKey((ModifierKeys)Hotkeys.GetGlobalHotkeyModNumber(mod), (Keys)keycode);
@@ -177,12 +259,21 @@ namespace MacroHotkey
 
         private void hook_KeyPressedAsync(object sender, KeyPressedEventArgs e)
         {
-            if (e.Modifier == MacroHotkey.ModifierKeys.Control && e.Key == Keys.Cancel) cancel = true;
+            if (e.Modifier == MacroHotkey.ModifierKeys.Control && e.Key == Keys.Cancel) macroCancelled = true;
+            else if (e.Key == Keys.Pause) ActionPause();
 
-            if (CheckActive.Checked && !running)
+            if (!macroRunning)
             {
-                running = true;
-                RunActionAsync(GetAction(e.Modifier.ToString(), e.Key.ToString()));
+                MacroStarted(GetAction(e.Modifier.ToString(), e.Key.ToString()));
+            }
+        }
+
+        private void RunMacro()
+        {
+            if (!macroRunning && LstActions.SelectedItems.Count == 1)
+            {
+                if (TSMinimizeOnRun.Checked) this.WindowState = FormWindowState.Minimized;
+                MacroStarted(LstActions.SelectedItems[0].SubItems[LIST_ACTION].Text);
             }
         }
 
@@ -200,6 +291,23 @@ namespace MacroHotkey
             }
 
             return null;
+        }
+
+        private string GetClipboardText(int index)
+        {
+            try
+            {
+                if (Clipboard.ContainsText())
+                {
+                    string clip = Clipboard.GetText();
+                    string[] split = clip.Split(new char[] { '\t', '\n' });
+
+                    if (split.Length > index) return split[index].Replace(Environment.NewLine, "").Replace("\t", "").Replace("\n", "").Replace("\r", "");
+                }
+
+                return "";
+            }
+            catch { return ""; }
         }
     }
 }

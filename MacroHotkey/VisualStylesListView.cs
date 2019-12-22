@@ -50,6 +50,22 @@ namespace MacroHotkey
             if (!this.DesignMode && Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major >= 6)
                 NativeMethods.SetWindowTheme(this.Handle, "explorer", null);
         }
+        
+        // disable selection dotted rectangle #1
+        protected override void OnSelectedIndexChanged(EventArgs e)
+        {
+            base.OnSelectedIndexChanged(e);
+            Message m = Message.Create(this.Handle, 0x127, new IntPtr(0x10001), new IntPtr(0));
+            this.WndProc(ref m);
+        }
+
+        // disable selection dotted rectangle #2
+        protected override void OnEnter(EventArgs e)
+        {
+            base.OnEnter(e);
+            Message m = Message.Create(this.Handle, 0x127, new IntPtr(0x10001), new IntPtr(0));
+            this.WndProc(ref m);
+        }
     }
 
     class VisualStylesTreeView : System.Windows.Forms.TreeView

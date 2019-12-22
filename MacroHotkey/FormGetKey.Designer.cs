@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGetKey));
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.labelName = new System.Windows.Forms.Label();
-            this.labelLineTop = new System.Windows.Forms.Label();
             this.labelLineBottom = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -39,48 +36,14 @@
             this.ChkCtrl = new System.Windows.Forms.CheckBox();
             this.ChkAlt = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.panelTop.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelTop
-            // 
-            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelTop.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panelTop.Controls.Add(this.labelName);
-            this.panelTop.Location = new System.Drawing.Point(0, 0);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(335, 51);
-            this.panelTop.TabIndex = 49;
-            // 
-            // labelName
-            // 
-            this.labelName.AutoSize = true;
-            this.labelName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelName.Location = new System.Drawing.Point(21, 18);
-            this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(130, 15);
-            this.labelName.TabIndex = 0;
-            this.labelName.Text = "Add keystroke or text";
-            this.labelName.UseMnemonic = false;
-            // 
-            // labelLineTop
-            // 
-            this.labelLineTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelLineTop.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.labelLineTop.Location = new System.Drawing.Point(-1, 51);
-            this.labelLineTop.Name = "labelLineTop";
-            this.labelLineTop.Size = new System.Drawing.Size(337, 2);
-            this.labelLineTop.TabIndex = 52;
-            this.labelLineTop.Text = "labelLine1";
             // 
             // labelLineBottom
             // 
             this.labelLineBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelLineBottom.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.labelLineBottom.Location = new System.Drawing.Point(-1, 150);
+            this.labelLineBottom.Location = new System.Drawing.Point(-1, 103);
             this.labelLineBottom.Name = "labelLineBottom";
             this.labelLineBottom.Size = new System.Drawing.Size(337, 2);
             this.labelLineBottom.TabIndex = 53;
@@ -89,7 +52,8 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(153, 165);
+            this.btnOk.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOk.Location = new System.Drawing.Point(153, 118);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 48;
@@ -101,7 +65,8 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(234, 165);
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(234, 118);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 47;
@@ -112,9 +77,10 @@
             // ChkShift
             // 
             this.ChkShift.AutoSize = true;
-            this.ChkShift.Location = new System.Drawing.Point(24, 112);
+            this.ChkShift.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChkShift.Location = new System.Drawing.Point(24, 62);
             this.ChkShift.Name = "ChkShift";
-            this.ChkShift.Size = new System.Drawing.Size(47, 17);
+            this.ChkShift.Size = new System.Drawing.Size(50, 19);
             this.ChkShift.TabIndex = 55;
             this.ChkShift.Text = "Shift";
             this.ChkShift.UseVisualStyleBackColor = true;
@@ -123,9 +89,10 @@
             // ChkCtrl
             // 
             this.ChkCtrl.AutoSize = true;
-            this.ChkCtrl.Location = new System.Drawing.Point(87, 112);
+            this.ChkCtrl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChkCtrl.Location = new System.Drawing.Point(87, 62);
             this.ChkCtrl.Name = "ChkCtrl";
-            this.ChkCtrl.Size = new System.Drawing.Size(41, 17);
+            this.ChkCtrl.Size = new System.Drawing.Size(45, 19);
             this.ChkCtrl.TabIndex = 56;
             this.ChkCtrl.Text = "Ctrl";
             this.ChkCtrl.UseVisualStyleBackColor = true;
@@ -134,9 +101,10 @@
             // ChkAlt
             // 
             this.ChkAlt.AutoSize = true;
-            this.ChkAlt.Location = new System.Drawing.Point(144, 112);
+            this.ChkAlt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChkAlt.Location = new System.Drawing.Point(144, 62);
             this.ChkAlt.Name = "ChkAlt";
-            this.ChkAlt.Size = new System.Drawing.Size(38, 17);
+            this.ChkAlt.Size = new System.Drawing.Size(41, 19);
             this.ChkAlt.TabIndex = 57;
             this.ChkAlt.Text = "Alt";
             this.ChkAlt.UseVisualStyleBackColor = true;
@@ -146,6 +114,7 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "{BACKSPACE}",
@@ -188,9 +157,9 @@
             "{SUBTRACT}",
             "{MULTIPLY}",
             "{DIVIDE}"});
-            this.comboBox1.Location = new System.Drawing.Point(24, 76);
+            this.comboBox1.Location = new System.Drawing.Point(24, 26);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(285, 21);
+            this.comboBox1.Size = new System.Drawing.Size(285, 23);
             this.comboBox1.TabIndex = 58;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             this.comboBox1.TextUpdate += new System.EventHandler(this.comboBox1_TextUpdate);
@@ -199,13 +168,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 201);
+            this.ClientSize = new System.Drawing.Size(335, 154);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.ChkAlt);
             this.Controls.Add(this.ChkCtrl);
             this.Controls.Add(this.ChkShift);
-            this.Controls.Add(this.panelTop);
-            this.Controls.Add(this.labelLineTop);
             this.Controls.Add(this.labelLineBottom);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
@@ -216,18 +183,14 @@
             this.Name = "FormGetKey";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Macro Hotkey";
-            this.panelTop.ResumeLayout(false);
-            this.panelTop.PerformLayout();
+            this.Text = "Add Key";
+            this.Shown += new System.EventHandler(this.FormGetKey_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel panelTop;
-        protected System.Windows.Forms.Label labelName;
-        private System.Windows.Forms.Label labelLineTop;
         private System.Windows.Forms.Label labelLineBottom;
         protected System.Windows.Forms.Button btnOk;
         protected System.Windows.Forms.Button btnCancel;
