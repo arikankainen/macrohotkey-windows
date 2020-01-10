@@ -26,10 +26,12 @@ namespace MacroHotkey
             CheckMinimizeOnRun.Checked = settings.LoadSetting("MinimizeOnRun", "bool", "false");
 
             CheckRememberMainWindowSize.Checked = settings.LoadSetting("RememberMainWindowSize", "bool", "true");
-            CheckRememberMainWindowPosition.Checked = settings.LoadSetting("RememberMainWindowPosition", "bool", "false");
+            CheckRememberMainWindowPosition.Checked = settings.LoadSetting("RememberMainWindowPosition", "bool", "true");
 
             CheckRememberEditorWindowSize.Checked = settings.LoadSetting("RememberEditorWindowSize", "bool", "true");
-            CheckRememberEditorWindowPosition.Checked = settings.LoadSetting("RememberEditorWindowPosition", "bool", "false");
+            CheckRememberEditorWindowPosition.Checked = settings.LoadSetting("RememberEditorWindowPosition", "bool", "true");
+
+            CheckReturnMouse.Checked = settings.LoadSetting("ReturnMouse", "bool", "true");
 
             ComboDelayStart.Text = settings.LoadSetting("DelayOnStart", "string", "500");
             ComboDelayBetween.Text = settings.LoadSetting("DelayBetweenCommands", "string", "100");
@@ -47,6 +49,8 @@ namespace MacroHotkey
 
             settings.SaveSetting("RememberEditorWindowSize", CheckRememberEditorWindowSize.Checked.ToString());
             settings.SaveSetting("RememberEditorWindowPosition", CheckRememberEditorWindowPosition.Checked.ToString());
+
+            settings.SaveSetting("ReturnMouse", CheckReturnMouse.Checked.ToString());
 
             settings.SaveSetting("DelayOnStart", ComboDelayStart.Text);
             settings.SaveSetting("DelayBetweenCommands", ComboDelayBetween.Text);

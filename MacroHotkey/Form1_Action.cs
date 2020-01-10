@@ -92,7 +92,12 @@ namespace MacroHotkey
             macroRunning = false;
 
             CheckSelectedItems();
-            Cursor.Position = originalMousePosition;
+            
+            if (setReturnMouse)
+            {
+                Cursor.Position = originalMousePosition;
+                Cursor.Position = originalMousePosition;
+            }
         }
 
         private void MacroRowCompleted()

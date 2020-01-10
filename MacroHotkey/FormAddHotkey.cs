@@ -111,7 +111,6 @@ namespace MacroHotkey
         private void FormAddHotkey_Load(object sender, EventArgs e)
         {
             LoadSettings();
-            CenterForm();
 
             //if (editMode) this.Text = "Edit Macro";
             //else this.Text = "Add Macro";
@@ -493,10 +492,25 @@ namespace MacroHotkey
             BtnDelay3.Text = "Delay(" + TxtDelay3.Text.Trim() + ")";
         }
 
+        private bool setRememberEditorWindowSize;
+        private bool setRememberEditorWindowPosition;
+
         private void SaveSettings()
         {
-            if (this.Width >= this.MinimumSize.Width) settings.SaveSetting("MacroWidth", this.Width.ToString());
-            if (this.Height >= this.MinimumSize.Height) settings.SaveSetting("MacroHeight", this.Height.ToString());
+            if (this.Width >= this.MinimumSize.Width && this.Height >= this.MinimumSize.Height)
+            {
+                if (setRememberEditorWindowSize)
+                {
+                    settings.SaveSetting("EditorWidth", this.Width.ToString());
+                    settings.SaveSetting("EditorHeight", this.Height.ToString());
+                }
+
+                if (setRememberEditorWindowPosition)
+                {
+                    settings.SaveSetting("EditorLeft", this.Left.ToString());
+                    settings.SaveSetting("EditorTop", this.Top.ToString());
+                }
+            }
 
             settings.SaveSetting("CustomKey1", TxtKey1.Text);
             settings.SaveSetting("CustomKey2", TxtKey2.Text);
@@ -508,9 +522,29 @@ namespace MacroHotkey
 
         private void LoadSettings()
         {
-            this.Width = settings.LoadSetting("MacroWidth", "int", "724");
-            this.Height = settings.LoadSetting("MacroHeight", "int", "851");
-            
+            setRememberEditorWindowSize = settings.LoadSetting("RememberEditorWindowSize", "bool", "true");
+            setRememberEditorWindowPosition = settings.LoadSetting("RememberEditorWindowPosition", "bool", "true");
+
+            if (setRememberEditorWindowSize)
+            {
+                this.Width = settings.LoadSetting("EditorWidth", "int", "724");
+                this.Height = settings.LoadSetting("EditorHeight", "int", "851");
+            }
+
+            if (setRememberEditorWindowPosition)
+            {
+                int left = settings.LoadSetting("EditorLeft", "int", "-9999");
+                int top = settings.LoadSetting("EditorTop", "int", "-9999");
+
+                if (left == -9999 || top == -9999) CenterForm();
+                else
+                {
+                    this.Left = left;
+                    this.Top = top;
+                }
+            }
+            else CenterForm();
+
             TxtKey1.Text = settings.LoadSetting("CustomKey1", "string", "{ESC}");
             TxtKey2.Text = settings.LoadSetting("CustomKey2", "string", "{TAB}");
             TxtKey3.Text = settings.LoadSetting("CustomKey3", "string", "{ENTER}");

@@ -13,6 +13,7 @@ namespace MacroHotkey
 
         private bool setRememberMainWindowSize;
         private bool setRememberMainWindowPosition;
+        private bool setReturnMouse;
 
         private void SaveSettings()
         {
@@ -43,7 +44,9 @@ namespace MacroHotkey
             setMinimizeOnRun = settings.LoadSetting("MinimizeOnRun", "bool", "false");
 
             setRememberMainWindowSize = settings.LoadSetting("RememberMainWindowSize", "bool", "true");
-            setRememberMainWindowPosition = settings.LoadSetting("RememberMainWindowPosition", "bool", "false");
+            setRememberMainWindowPosition = settings.LoadSetting("RememberMainWindowPosition", "bool", "true");
+
+            setReturnMouse = settings.LoadSetting("ReturnMouse", "bool", "true");
 
             if (setRememberMainWindowSize && updateWindow)
             {

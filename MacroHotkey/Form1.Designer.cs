@@ -43,6 +43,9 @@
             this.BtnRunMacro = new System.Windows.Forms.ToolStripButton();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.TSBackup = new System.Windows.Forms.MenuItem();
+            this.TSSettings = new System.Windows.Forms.MenuItem();
+            this.TSHelp = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.TSExit = new System.Windows.Forms.MenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -50,13 +53,11 @@
             this.labelDuration = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.labelVersion = new System.Windows.Forms.ToolStripStatusLabel();
-            this.TSBackup = new System.Windows.Forms.MenuItem();
-            this.TSSettings = new System.Windows.Forms.MenuItem();
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.LstActions = new MacroHotkey.VisualStylesListView();
             this.ClmName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmHotkey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmAction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -167,20 +168,39 @@
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.TSBackup,
-            this.menuItem5,
+            this.menuItem2,
             this.TSSettings,
+            this.TSHelp,
             this.menuItem3,
             this.TSExit});
             this.menuItem1.Text = "File";
             // 
+            // TSBackup
+            // 
+            this.TSBackup.Index = 0;
+            this.TSBackup.Text = "Create backup of all macros";
+            this.TSBackup.Click += new System.EventHandler(this.TSBackup_Click);
+            // 
+            // TSSettings
+            // 
+            this.TSSettings.Index = 2;
+            this.TSSettings.Text = "Settings";
+            this.TSSettings.Click += new System.EventHandler(this.TSSettings_Click);
+            // 
+            // TSHelp
+            // 
+            this.TSHelp.Index = 3;
+            this.TSHelp.Text = "Help";
+            this.TSHelp.Click += new System.EventHandler(this.TSHelp_Click);
+            // 
             // menuItem3
             // 
-            this.menuItem3.Index = 3;
+            this.menuItem3.Index = 4;
             this.menuItem3.Text = "-";
             // 
             // TSExit
             // 
-            this.TSExit.Index = 4;
+            this.TSExit.Index = 5;
             this.TSExit.Text = "Exit";
             this.TSExit.Click += new System.EventHandler(this.TSExit_Click);
             // 
@@ -226,23 +246,6 @@
             this.labelVersion.Text = "v0.0.0.0";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // TSBackup
-            // 
-            this.TSBackup.Index = 0;
-            this.TSBackup.Text = "Create backup of all macros";
-            this.TSBackup.Click += new System.EventHandler(this.TSBackup_Click);
-            // 
-            // TSSettings
-            // 
-            this.TSSettings.Index = 2;
-            this.TSSettings.Text = "Settings...";
-            this.TSSettings.Click += new System.EventHandler(this.TSSettings_Click);
-            // 
-            // menuItem5
-            // 
-            this.menuItem5.Index = 1;
-            this.menuItem5.Text = "-";
-            // 
             // LstActions
             // 
             this.LstActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -280,6 +283,11 @@
             // 
             this.ClmAction.Text = "Macro";
             this.ClmAction.Width = 191;
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 1;
+            this.menuItem2.Text = "-";
             // 
             // Form1
             // 
@@ -336,8 +344,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem TSBackup;
-        private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.MenuItem TSSettings;
+        private System.Windows.Forms.MenuItem TSHelp;
+        private System.Windows.Forms.MenuItem menuItem2;
     }
 }
 

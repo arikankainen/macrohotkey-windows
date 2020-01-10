@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -75,6 +76,9 @@ namespace MacroHotkey
             LoadSettings(true);
 
             if (setStartInTray) this.Opacity = 0;
+
+            string cfgFile = Path.Combine(appDir, "settings.cfg");
+            if (!File.Exists(cfgFile)) TSHelp.PerformClick();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -321,6 +325,15 @@ namespace MacroHotkey
 
             LoadSettings(false);
             ReloadHotkeys();
+        }
+
+        private void TSHelp_Click(object sender, EventArgs e)
+        {
+            string helpFile = Path.Combine(appDir, "macrohotkey.chm");
+            if (File.Exists(helpFile))
+            {
+                Process.Start(helpFile);
+            }
         }
     }
 
