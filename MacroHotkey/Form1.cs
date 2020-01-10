@@ -10,8 +10,9 @@ namespace MacroHotkey
 {
     public partial class Form1 : Form
     {
-        private const int DELAY_ON_START = 500;
-        private const int DELAY_BETWEEN = 100;
+        private int setDelayOnStart = 500;
+        private int setDelayBetween = 100;
+        private int setDelayPaste = 200;
 
         private const int LIST_NAME = 0;
         private const int LIST_HOTKEY = 1;
@@ -71,10 +72,9 @@ namespace MacroHotkey
             LoadList();
             CheckSelectedItems();
             ReloadHotkeys();
-            LoadSettings();
-            CenterForm();
+            LoadSettings(true);
 
-            if (TSStartInTray.Checked) this.Opacity = 0;
+            if (setStartInTray) this.Opacity = 0;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -82,7 +82,7 @@ namespace MacroHotkey
             SaveList();
             SaveSettings();
 
-            if (reallyClose || e.CloseReason == CloseReason.WindowsShutDown || !TSCloseToTray.Checked)
+            if (reallyClose || e.CloseReason == CloseReason.WindowsShutDown || !setCloseToTray)
             {
                 hook.KeyPressed -= new EventHandler<KeyPressedEventArgs>(hook_KeyPressedAsync);
                 notification.Dispose();
@@ -271,7 +271,7 @@ namespace MacroHotkey
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            if (TSStartInTray.Checked) this.Hide();
+            if (setStartInTray) this.Hide();
         }
 
         private void TimerMacro_Tick(object sender, EventArgs e)
@@ -299,24 +299,6 @@ namespace MacroHotkey
             this.Close();
         }
 
-        private void TSCloseToTray_Click(object sender, EventArgs e)
-        {
-            if (TSCloseToTray.Checked) TSCloseToTray.Checked = false;
-            else TSCloseToTray.Checked = true;
-        }
-
-        private void TSStartInTray_Click(object sender, EventArgs e)
-        {
-            if (TSStartInTray.Checked) TSStartInTray.Checked = false;
-            else TSStartInTray.Checked = true;
-        }
-
-        private void TSMinimizeOnRun_Click(object sender, EventArgs e)
-        {
-            if (TSMinimizeOnRun.Checked) TSMinimizeOnRun.Checked = false;
-            else TSMinimizeOnRun.Checked = true;
-        }
-
         private void TSBackup_Click(object sender, EventArgs e)
         {
             if (File.Exists(listFile))
@@ -328,6 +310,17 @@ namespace MacroHotkey
 
                 MessageBox.Show("Macros backed up successfully!" + Environment.NewLine + Environment.NewLine + Path.GetFileName(backupFile), "Backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void TSSettings_Click(object sender, EventArgs e)
+        {
+            hook.DisposeAllKeys();
+
+            FormSettings form = new FormSettings();
+            form.ShowDialog();
+
+            LoadSettings(false);
+            ReloadHotkeys();
         }
     }
 

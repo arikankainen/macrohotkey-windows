@@ -7,28 +7,78 @@ namespace MacroHotkey
 {
     public partial class Form1
     {
+        private bool setStartInTray;
+        private bool setCloseToTray;
+        private bool setMinimizeOnRun;
+
+        private bool setRememberMainWindowSize;
+        private bool setRememberMainWindowPosition;
+
         private void SaveSettings()
         {
-            if (this.Width >= this.MinimumSize.Width) settings.SaveSetting("Width", this.Width.ToString());
-            if (this.Height >= this.MinimumSize.Height) settings.SaveSetting("Height", this.Height.ToString());
+            if (this.Width >= this.MinimumSize.Width && this.Height >= this.MinimumSize.Height)
+            {
+                if (setRememberMainWindowSize)
+                {
+                    settings.SaveSetting("Width", this.Width.ToString());
+                    settings.SaveSetting("Height", this.Height.ToString());
+                }
+
+                if (setRememberMainWindowPosition)
+                {
+                    settings.SaveSetting("Left", this.Left.ToString());
+                    settings.SaveSetting("Top", this.Top.ToString());
+                }
+            }
+            
             settings.SaveSetting("ColumnNameWidth", ClmName.Width.ToString());
             settings.SaveSetting("ColumnHotkeyWidth", ClmHotkey.Width.ToString());
             settings.SaveSetting("ColumnActionWidth", ClmAction.Width.ToString());
-            settings.SaveSetting("StartInTray", TSStartInTray.Checked.ToString());
-            settings.SaveSetting("CloseToTray", TSCloseToTray.Checked.ToString());
-            settings.SaveSetting("MinimizeOnRun", TSMinimizeOnRun.Checked.ToString());
         }
 
-        private void LoadSettings()
+        private void LoadSettings(bool updateWindow)
         {
-            this.Width = settings.LoadSetting("Width", "int", "600");
-            this.Height = settings.LoadSetting("Height", "int", "400");
-            ClmName.Width = settings.LoadSetting("ColumnNameWidth", "int", "150");
-            ClmHotkey.Width = settings.LoadSetting("ColumnHotkeyWidth", "int", "105");
-            ClmAction.Width = settings.LoadSetting("ColumnActionWidth", "int", "250");
-            TSStartInTray.Checked = settings.LoadSetting("StartInTray", "bool", "false");
-            TSCloseToTray.Checked = settings.LoadSetting("CloseToTray", "bool", "false");
-            TSMinimizeOnRun.Checked = settings.LoadSetting("MinimizeOnRun", "bool", "false");
+            setStartInTray = settings.LoadSetting("StartInTray", "bool", "false");
+            setCloseToTray = settings.LoadSetting("CloseToTray", "bool", "false");
+            setMinimizeOnRun = settings.LoadSetting("MinimizeOnRun", "bool", "false");
+
+            setRememberMainWindowSize = settings.LoadSetting("RememberMainWindowSize", "bool", "true");
+            setRememberMainWindowPosition = settings.LoadSetting("RememberMainWindowPosition", "bool", "false");
+
+            if (setRememberMainWindowSize && updateWindow)
+            {
+                this.Width = settings.LoadSetting("Width", "int", "600");
+                this.Height = settings.LoadSetting("Height", "int", "400");
+            }
+
+            if (setRememberMainWindowPosition && updateWindow)
+            {
+                int left = settings.LoadSetting("Left", "int", "-9999");
+                int top = settings.LoadSetting("Top", "int", "-9999");
+
+                if (left == -9999 || top == -9999) CenterForm();
+                else
+                {
+                    this.Left = left;
+                    this.Top = top;
+                }
+            }
+            else if (updateWindow) CenterForm();
+
+            if (updateWindow)
+            {
+                ClmName.Width = settings.LoadSetting("ColumnNameWidth", "int", "150");
+                ClmHotkey.Width = settings.LoadSetting("ColumnHotkeyWidth", "int", "105");
+                ClmAction.Width = settings.LoadSetting("ColumnActionWidth", "int", "250");
+            }
+
+            string delayOnStart = settings.LoadSetting("DelayOnStart", "string", "500");
+            string delayBetween = settings.LoadSetting("DelayBetweenCommands", "string", "100");
+            string delayPaste = settings.LoadSetting("DelayAfterPaste", "string", "200");
+
+            int.TryParse(delayOnStart, out setDelayOnStart);
+            int.TryParse(delayBetween, out setDelayBetween);
+            int.TryParse(delayPaste, out setDelayPaste);
         }
 
         private void SaveList()

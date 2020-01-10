@@ -193,6 +193,7 @@ namespace MacroHotkey
                 if (scr == null)
                 {
                     Cursor.Position = new Point(x, y);
+                    Cursor.Position = new Point(x, y);
                 }
                 else
                 {
@@ -203,6 +204,7 @@ namespace MacroHotkey
                         int relativeX = screen.Bounds.X + x;
                         int relativeY = screen.Bounds.Y + y;
 
+                        Cursor.Position = new Point(relativeX, relativeY);
                         Cursor.Position = new Point(relativeX, relativeY);
                     }
                 }
@@ -272,7 +274,7 @@ namespace MacroHotkey
         {
             if (!macroRunning && LstActions.SelectedItems.Count == 1)
             {
-                if (TSMinimizeOnRun.Checked) this.WindowState = FormWindowState.Minimized;
+                if (setMinimizeOnRun) this.WindowState = FormWindowState.Minimized;
                 MacroStarted(LstActions.SelectedItems[0].SubItems[LIST_ACTION].Text);
             }
         }

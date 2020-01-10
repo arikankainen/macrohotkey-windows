@@ -554,6 +554,7 @@ namespace MacroHotkey
                 if (scr == null)
                 {
                     Cursor.Position = new Point(x, y);
+                    Cursor.Position = new Point(x, y);
                 }
                 else
                 {
@@ -564,6 +565,7 @@ namespace MacroHotkey
                         int relativeX = screen.Bounds.X + x;
                         int relativeY = screen.Bounds.Y + y;
 
+                        Cursor.Position = new Point(relativeX, relativeY);
                         Cursor.Position = new Point(relativeX, relativeY);
                     }
                 }

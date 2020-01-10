@@ -11,6 +11,14 @@ namespace MacroHotkey
 {
     public partial class Form1
     {
+        private async Task WaitMillisecondsAsync(int ms)
+        {
+            await Task.Run(async () =>
+            {
+                await Task.Delay(ms);
+            });
+        }
+
         private void MacroTimerTick()
         {
             if (macroCancelled)
@@ -20,7 +28,7 @@ namespace MacroHotkey
             }
             else if (actionDelayType == ActionDelayType.DelayInitial)
             {
-                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > DELAY_ON_START)
+                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > setDelayOnStart)
                 {
                     TimerMacro.Stop();
                     RunRow(macroRows[macroRow]);
@@ -28,7 +36,7 @@ namespace MacroHotkey
             }
             else if (actionDelayType == ActionDelayType.DelayBetween)
             {
-                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > DELAY_BETWEEN)
+                if ((DateTime.Now - macroRowCompletedTime).TotalMilliseconds > setDelayBetween)
                 {
                     TimerMacro.Stop();
                     RunRow(macroRows[macroRow]);
@@ -98,7 +106,7 @@ namespace MacroHotkey
 
         private int CalculateMacroTotalTime(List<string> rows)
         {
-            int totalTime = DELAY_ON_START;
+            int totalTime = setDelayOnStart;
 
             foreach (string row in rows)
             {
@@ -115,7 +123,9 @@ namespace MacroHotkey
                         int.TryParse(value, out int delay);
                         totalTime += delay;
                     }
-                    else totalTime += DELAY_BETWEEN;
+                    else totalTime += setDelayBetween;
+
+                    if (command.Contains("paste")) totalTime += setDelayPaste;
                 }
             }
 
@@ -162,6 +172,10 @@ namespace MacroHotkey
                     ActionTypeText(value);
                     break;
 
+                case "copy":
+                    ActionCopy();
+                    break;
+
                 case "paste":
                     ActionPaste(value);
                     break;
@@ -197,9 +211,11 @@ namespace MacroHotkey
                 case "activatewindow":
                     ActionActivateWindow(value);
                     break;
-            }
 
-            MacroRowCompleted();
+                default:
+                    MacroRowCompleted();
+                    break;
+            }
         }
 
         private void ActionPause()
@@ -215,6 +231,8 @@ namespace MacroHotkey
                 macroRowCompletedTime = DateTime.Now;
                 notification.ContinueProgress();
             }
+            
+            MacroRowCompleted();
         }
 
         private void ActionDelay(string value)
@@ -230,6 +248,8 @@ namespace MacroHotkey
                 }
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionKey(string value)
@@ -239,23 +259,40 @@ namespace MacroHotkey
                 SendKeys.SendWait(value.ToLower());
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
-        private void ActionPasteText(string value)
+        private async void ActionPasteText(string value)
         {
             try
             {
                 string clipboard = null;
                 if (Clipboard.ContainsText()) clipboard = Clipboard.GetText();
 
-                Clipboard.SetText(value);
+                Clipboard.SetDataObject(value);
                 SendKeys.Send("^v");
+
+                await WaitMillisecondsAsync(setDelayPaste);
                 if (clipboard != null) Clipboard.SetText(clipboard);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
-        private void ActionPaste(string value)
+        private void ActionCopy()
+        {
+            try
+            {
+                SendKeys.Send("^c");
+            }
+            catch { }
+
+            MacroRowCompleted();
+        }
+
+        private async void ActionPaste(string value)
         {
             try
             {
@@ -266,9 +303,13 @@ namespace MacroHotkey
                 
                 if (value != "") Clipboard.SetText(GetClipboardText(index - 1));
                 SendKeys.Send("^v");
+
+                await WaitMillisecondsAsync(setDelayPaste);
                 if (clipboard != null && value != "") Clipboard.SetText(clipboard);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionTypeText(string value)
@@ -294,6 +335,8 @@ namespace MacroHotkey
                 }
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionMouseDown(string value)
@@ -305,6 +348,8 @@ namespace MacroHotkey
                 else if (value.ToLower() == "middle") DoMouseDown(MouseButtons.Middle);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionMouseUp(string value)
@@ -316,6 +361,8 @@ namespace MacroHotkey
                 else if (value.ToLower() == "middle") DoMouseUp(MouseButtons.Middle);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionMouseClick(string value)
@@ -327,6 +374,8 @@ namespace MacroHotkey
                 else if (value.ToLower() == "middle") DoMouseClick(MouseButtons.Middle);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionMouseMove(string value)
@@ -339,8 +388,11 @@ namespace MacroHotkey
                 int.TryParse(position[1], out int y);
 
                 Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
+                Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionMousePosition(string value)
@@ -357,6 +409,8 @@ namespace MacroHotkey
                 SetCursor(scr, x, y);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionWindowPosition(string value)
@@ -373,6 +427,8 @@ namespace MacroHotkey
                 WindowPosition(scr, x, y);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionWindowSize(string value)
@@ -387,6 +443,8 @@ namespace MacroHotkey
                 WindowSize(width, height);
             }
             catch { }
+
+            MacroRowCompleted();
         }
 
         private void ActionActivateWindow(string value)
@@ -412,6 +470,8 @@ namespace MacroHotkey
                 ActivateWindow(process, title);
             }
             catch { }
+
+            MacroRowCompleted();
         }
     }
 }

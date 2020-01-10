@@ -43,19 +43,16 @@
             this.BtnRunMacro = new System.Windows.Forms.ToolStripButton();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.TSBackup = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.TSExit = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.TSCloseToTray = new System.Windows.Forms.MenuItem();
-            this.TSStartInTray = new System.Windows.Forms.MenuItem();
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
-            this.TSMinimizeOnRun = new System.Windows.Forms.MenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.labelItems = new System.Windows.Forms.ToolStripStatusLabel();
             this.labelDuration = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.labelVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.TSBackup = new System.Windows.Forms.MenuItem();
+            this.TSSettings = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.LstActions = new MacroHotkey.VisualStylesListView();
             this.ClmName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ClmHotkey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -163,67 +160,29 @@
             // mainMenu1
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1,
-            this.menuItem2});
+            this.menuItem1});
             // 
             // menuItem1
             // 
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.TSBackup,
+            this.menuItem5,
+            this.TSSettings,
             this.menuItem3,
             this.TSExit});
             this.menuItem1.Text = "File";
             // 
-            // TSBackup
-            // 
-            this.TSBackup.Index = 0;
-            this.TSBackup.Text = "Create backup of all macros";
-            this.TSBackup.Click += new System.EventHandler(this.TSBackup_Click);
-            // 
             // menuItem3
             // 
-            this.menuItem3.Index = 1;
+            this.menuItem3.Index = 3;
             this.menuItem3.Text = "-";
             // 
             // TSExit
             // 
-            this.TSExit.Index = 2;
+            this.TSExit.Index = 4;
             this.TSExit.Text = "Exit";
             this.TSExit.Click += new System.EventHandler(this.TSExit_Click);
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 1;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.TSCloseToTray,
-            this.TSStartInTray,
-            this.menuItem5,
-            this.TSMinimizeOnRun});
-            this.menuItem2.Text = "Settings";
-            // 
-            // TSCloseToTray
-            // 
-            this.TSCloseToTray.Index = 0;
-            this.TSCloseToTray.Text = "Close to tray";
-            this.TSCloseToTray.Click += new System.EventHandler(this.TSCloseToTray_Click);
-            // 
-            // TSStartInTray
-            // 
-            this.TSStartInTray.Index = 1;
-            this.TSStartInTray.Text = "Start in tray";
-            this.TSStartInTray.Click += new System.EventHandler(this.TSStartInTray_Click);
-            // 
-            // menuItem5
-            // 
-            this.menuItem5.Index = 2;
-            this.menuItem5.Text = "-";
-            // 
-            // TSMinimizeOnRun
-            // 
-            this.TSMinimizeOnRun.Index = 3;
-            this.TSMinimizeOnRun.Text = "Minimize when using \'Run\' button";
-            this.TSMinimizeOnRun.Click += new System.EventHandler(this.TSMinimizeOnRun_Click);
             // 
             // statusStrip1
             // 
@@ -232,7 +191,7 @@
             this.labelDuration,
             this.toolStripStatusLabel2,
             this.labelVersion});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 349);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 239);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(570, 22);
             this.statusStrip1.TabIndex = 31;
@@ -267,6 +226,23 @@
             this.labelVersion.Text = "v0.0.0.0";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // TSBackup
+            // 
+            this.TSBackup.Index = 0;
+            this.TSBackup.Text = "Create backup of all macros";
+            this.TSBackup.Click += new System.EventHandler(this.TSBackup_Click);
+            // 
+            // TSSettings
+            // 
+            this.TSSettings.Index = 2;
+            this.TSSettings.Text = "Settings...";
+            this.TSSettings.Click += new System.EventHandler(this.TSSettings_Click);
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 1;
+            this.menuItem5.Text = "-";
+            // 
             // LstActions
             // 
             this.LstActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -279,10 +255,11 @@
             this.LstActions.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LstActions.FullRowSelect = true;
             this.LstActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.LstActions.HideSelection = false;
             this.LstActions.Location = new System.Drawing.Point(24, 44);
             this.LstActions.MultiSelect = false;
             this.LstActions.Name = "LstActions";
-            this.LstActions.Size = new System.Drawing.Size(522, 285);
+            this.LstActions.Size = new System.Drawing.Size(522, 175);
             this.LstActions.TabIndex = 23;
             this.LstActions.UseCompatibleStateImageBehavior = false;
             this.LstActions.View = System.Windows.Forms.View.Details;
@@ -308,14 +285,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(570, 371);
+            this.ClientSize = new System.Drawing.Size(570, 261);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.LstActions);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Menu = this.mainMenu1;
-            this.MinimumSize = new System.Drawing.Size(586, 410);
+            this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -350,19 +328,16 @@
         private System.Windows.Forms.ToolStripButton BtnRunMacro;
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem TSBackup;
         private System.Windows.Forms.MenuItem TSExit;
-        private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.MenuItem TSCloseToTray;
-        private System.Windows.Forms.MenuItem TSStartInTray;
-        private System.Windows.Forms.MenuItem TSMinimizeOnRun;
-        private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel labelItems;
         private System.Windows.Forms.ToolStripStatusLabel labelVersion;
         private System.Windows.Forms.ToolStripStatusLabel labelDuration;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem TSBackup;
+        private System.Windows.Forms.MenuItem menuItem5;
+        private System.Windows.Forms.MenuItem TSSettings;
     }
 }
 
