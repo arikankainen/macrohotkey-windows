@@ -66,6 +66,7 @@ namespace MacroHotkey
                 originalMousePosition = Cursor.Position;
 
                 macroCancelled = false;
+                actionDelayType = ActionDelayType.None;
 
                 macroRowCompletedTime = DateTime.Now;
                 macroRow = 0;
@@ -90,6 +91,7 @@ namespace MacroHotkey
             NotifyIcon1.Icon = this.Icon = Properties.Resources.mh;
 
             macroRunning = false;
+            macroCancelled = false;
 
             CheckSelectedItems();
             
@@ -130,7 +132,7 @@ namespace MacroHotkey
                     }
                     else totalTime += setDelayBetween;
 
-                    if (command.Contains("paste")) totalTime += setDelayPaste;
+                    if (command.Contains("paste")) totalTime += setDelayBeforePaste + setDelayAfterPaste;
                 }
             }
 
@@ -158,7 +160,7 @@ namespace MacroHotkey
             switch (command)
             {
                 case "pause":
-                    ActionPause();
+                    ActionPause(false);
                     break;
 
                 case "delay":
@@ -223,7 +225,7 @@ namespace MacroHotkey
             }
         }
 
-        private void ActionPause()
+        private void ActionPause(bool manualPause)
         {
             if (actionDelayType != ActionDelayType.Pause)
             {
@@ -237,7 +239,7 @@ namespace MacroHotkey
                 notification.ContinueProgress();
             }
             
-            MacroRowCompleted();
+            if (!manualPause) MacroRowCompleted();
         }
 
         private void ActionDelay(string value)
@@ -275,10 +277,12 @@ namespace MacroHotkey
                 string clipboard = null;
                 if (Clipboard.ContainsText()) clipboard = Clipboard.GetText();
 
-                Clipboard.SetDataObject(value);
-                SendKeys.Send("^v");
+                Clipboard.SetText(value);
+                await WaitMillisecondsAsync(setDelayBeforePaste);
 
-                await WaitMillisecondsAsync(setDelayPaste);
+                SendKeys.Send("^v");
+                await WaitMillisecondsAsync(setDelayAfterPaste);
+
                 if (clipboard != null) Clipboard.SetText(clipboard);
             }
             catch { }
@@ -305,11 +309,16 @@ namespace MacroHotkey
                 if (Clipboard.ContainsText()) clipboard = Clipboard.GetText();
 
                 int.TryParse(value, out int index);
-                
-                if (value != "") Clipboard.SetText(GetClipboardText(index - 1));
-                SendKeys.Send("^v");
 
-                await WaitMillisecondsAsync(setDelayPaste);
+                if (value != "")
+                {
+                    Clipboard.SetText(GetClipboardText(index - 1));
+                    await WaitMillisecondsAsync(setDelayBeforePaste);
+                }
+
+                SendKeys.Send("^v");
+                await WaitMillisecondsAsync(setDelayAfterPaste);
+
                 if (clipboard != null && value != "") Clipboard.SetText(clipboard);
             }
             catch { }

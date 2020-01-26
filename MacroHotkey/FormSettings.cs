@@ -35,7 +35,8 @@ namespace MacroHotkey
 
             ComboDelayStart.Text = settings.LoadSetting("DelayOnStart", "string", "500");
             ComboDelayBetween.Text = settings.LoadSetting("DelayBetweenCommands", "string", "100");
-            ComboDelayPaste.Text = settings.LoadSetting("DelayAfterPaste", "string", "200");
+            ComboDelayBeforePaste.Text = settings.LoadSetting("DelayBeforePaste", "string", "300");
+            ComboDelayAfterPaste.Text = settings.LoadSetting("DelayAfterPaste", "string", "100");
         }
 
         private void BtnOk_Click(object sender, EventArgs e)
@@ -54,7 +55,8 @@ namespace MacroHotkey
 
             settings.SaveSetting("DelayOnStart", ComboDelayStart.Text);
             settings.SaveSetting("DelayBetweenCommands", ComboDelayBetween.Text);
-            settings.SaveSetting("DelayAfterPaste", ComboDelayPaste.Text);
+            settings.SaveSetting("DelayBeforePaste", ComboDelayBeforePaste.Text);
+            settings.SaveSetting("DelayAfterPaste", ComboDelayAfterPaste.Text);
 
             this.Close();
         }

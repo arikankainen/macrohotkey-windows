@@ -13,7 +13,8 @@ namespace MacroHotkey
     {
         private int setDelayOnStart = 500;
         private int setDelayBetween = 100;
-        private int setDelayPaste = 200;
+        private int setDelayBeforePaste = 300;
+        private int setDelayAfterPaste = 100;
 
         private const int LIST_NAME = 0;
         private const int LIST_HOTKEY = 1;

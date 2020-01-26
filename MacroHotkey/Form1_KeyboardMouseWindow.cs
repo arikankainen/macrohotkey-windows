@@ -262,7 +262,7 @@ namespace MacroHotkey
         private void hook_KeyPressedAsync(object sender, KeyPressedEventArgs e)
         {
             if (e.Modifier == MacroHotkey.ModifierKeys.Control && e.Key == Keys.Cancel) macroCancelled = true;
-            else if (e.Key == Keys.Pause) ActionPause();
+            else if (e.Key == Keys.Pause) ActionPause(true);
 
             if (!macroRunning)
             {

@@ -77,11 +77,13 @@ namespace MacroHotkey
 
             string delayOnStart = settings.LoadSetting("DelayOnStart", "string", "500");
             string delayBetween = settings.LoadSetting("DelayBetweenCommands", "string", "100");
-            string delayPaste = settings.LoadSetting("DelayAfterPaste", "string", "200");
+            string delayBeforePaste = settings.LoadSetting("DelayBeforePaste", "string", "300");
+            string delayAfterPaste = settings.LoadSetting("DelayAfterPaste", "string", "100");
 
             int.TryParse(delayOnStart, out setDelayOnStart);
             int.TryParse(delayBetween, out setDelayBetween);
-            int.TryParse(delayPaste, out setDelayPaste);
+            int.TryParse(delayBeforePaste, out setDelayBeforePaste);
+            int.TryParse(delayAfterPaste, out setDelayAfterPaste);
         }
 
         private void SaveList()
