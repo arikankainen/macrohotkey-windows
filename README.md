@@ -5,4 +5,7 @@ Macro Hotkeyn tarkoitus on automatisoida usein toistettavia hiirellä tai näpp�
 Artikkeli projektista löytyy:
 https://www.arik.fi/ohjelmat_macro_hotkey.php
 
-<img src="/docs/macrohotkey.png">
+<img src="/docs/macrohotkey1.png">
+<img src="/docs/macrohotkey2.png">
+<img src="/docs/macrohotkey3.png">
+<img src="/docs/macrohotkey4.png">
