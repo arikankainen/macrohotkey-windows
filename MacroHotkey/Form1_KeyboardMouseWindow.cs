@@ -65,7 +65,7 @@ namespace MacroHotkey
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, int dwData, uint dwExtraInfo);
 
         private const uint MOUSEEVENTF_ABSOLUTE = 0x8000;
         private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
@@ -79,6 +79,7 @@ namespace MacroHotkey
         private const uint MOUSEEVENTF_XUP = 0x0100;
         private const uint MOUSEEVENTF_WHEEL = 0x0800;
         private const uint MOUSEEVENTF_HWHEEL = 0x01000;
+        private const uint WHEEL_DELTA = 120;
 
         public void DoMouseClick(MouseButtons mouseButton)
         {
@@ -105,6 +106,12 @@ namespace MacroHotkey
             if (mouseButton == MouseButtons.Left) mouse_event(MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
             if (mouseButton == MouseButtons.Right) mouse_event(MOUSEEVENTF_RIGHTUP, X, Y, 0, 0);
             if (mouseButton == MouseButtons.Middle) mouse_event(MOUSEEVENTF_MIDDLEUP, X, Y, 0, 0);
+        }
+
+        public void DoMouseScroll(int amount)
+        {
+            int calculatedAmount = amount * (int)WHEEL_DELTA;
+            mouse_event(MOUSEEVENTF_WHEEL, 0, 0, calculatedAmount, 0);
         }
 
         private void WindowPosition(string scr, int x, int y)

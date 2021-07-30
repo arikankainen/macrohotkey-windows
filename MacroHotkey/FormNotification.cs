@@ -95,6 +95,16 @@ namespace MacroHotkey
             timer1.Start();
         }
 
+        public void ResetProgress()
+        {
+            startTime = DateTime.Now;
+            elapsedTime = 0;
+            progressBar1.Value = 0;
+            LabelName.ForeColor = Color.White;
+            LabelName.Text = " Running macro...";
+            timer1.Start();
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             elapsedTime = (int)(DateTime.Now - startTime).TotalMilliseconds;

@@ -89,6 +89,8 @@
             this.BtnWindowPosition = new System.Windows.Forms.Button();
             this.BtnWindowSize = new System.Windows.Forms.Button();
             this.BtnActivateWindow = new System.Windows.Forms.Button();
+            this.BtnMouseScroll = new System.Windows.Forms.Button();
+            this.BtnStartAgain = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel9.SuspendLayout();
             this.flowLayoutPanel8.SuspendLayout();
@@ -347,7 +349,7 @@
             this.BtnMouseClickLeft.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnMouseClickLeft.Image = ((System.Drawing.Image)(resources.GetObject("BtnMouseClickLeft.Image")));
             this.BtnMouseClickLeft.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnMouseClickLeft.Location = new System.Drawing.Point(3, 122);
+            this.BtnMouseClickLeft.Location = new System.Drawing.Point(3, 162);
             this.BtnMouseClickLeft.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.BtnMouseClickLeft.Name = "BtnMouseClickLeft";
             this.BtnMouseClickLeft.Size = new System.Drawing.Size(249, 24);
@@ -365,7 +367,7 @@
             this.BtnMouseClickMiddle.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnMouseClickMiddle.Image = ((System.Drawing.Image)(resources.GetObject("BtnMouseClickMiddle.Image")));
             this.BtnMouseClickMiddle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnMouseClickMiddle.Location = new System.Drawing.Point(3, 152);
+            this.BtnMouseClickMiddle.Location = new System.Drawing.Point(3, 192);
             this.BtnMouseClickMiddle.Name = "BtnMouseClickMiddle";
             this.BtnMouseClickMiddle.Size = new System.Drawing.Size(249, 24);
             this.BtnMouseClickMiddle.TabIndex = 7;
@@ -382,7 +384,7 @@
             this.BtnMouseClickRight.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnMouseClickRight.Image = ((System.Drawing.Image)(resources.GetObject("BtnMouseClickRight.Image")));
             this.BtnMouseClickRight.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnMouseClickRight.Location = new System.Drawing.Point(3, 182);
+            this.BtnMouseClickRight.Location = new System.Drawing.Point(3, 222);
             this.BtnMouseClickRight.Name = "BtnMouseClickRight";
             this.BtnMouseClickRight.Size = new System.Drawing.Size(249, 24);
             this.BtnMouseClickRight.TabIndex = 8;
@@ -399,7 +401,7 @@
             this.BtnKey.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnKey.Image = ((System.Drawing.Image)(resources.GetObject("BtnKey.Image")));
             this.BtnKey.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKey.Location = new System.Drawing.Point(3, 362);
+            this.BtnKey.Location = new System.Drawing.Point(3, 402);
             this.BtnKey.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.BtnKey.Name = "BtnKey";
             this.BtnKey.Size = new System.Drawing.Size(249, 24);
@@ -620,7 +622,7 @@
             this.BtnMouseDownLeft.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnMouseDownLeft.Image = ((System.Drawing.Image)(resources.GetObject("BtnMouseDownLeft.Image")));
             this.BtnMouseDownLeft.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnMouseDownLeft.Location = new System.Drawing.Point(3, 222);
+            this.BtnMouseDownLeft.Location = new System.Drawing.Point(3, 262);
             this.BtnMouseDownLeft.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.BtnMouseDownLeft.Name = "BtnMouseDownLeft";
             this.BtnMouseDownLeft.Size = new System.Drawing.Size(249, 24);
@@ -638,7 +640,7 @@
             this.BtnMouseUpLeft.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnMouseUpLeft.Image = ((System.Drawing.Image)(resources.GetObject("BtnMouseUpLeft.Image")));
             this.BtnMouseUpLeft.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnMouseUpLeft.Location = new System.Drawing.Point(3, 252);
+            this.BtnMouseUpLeft.Location = new System.Drawing.Point(3, 292);
             this.BtnMouseUpLeft.Name = "BtnMouseUpLeft";
             this.BtnMouseUpLeft.Size = new System.Drawing.Size(249, 24);
             this.BtnMouseUpLeft.TabIndex = 10;
@@ -656,6 +658,7 @@
             this.flowLayoutPanel1.Controls.Add(this.BtnMousePositionMonitor);
             this.flowLayoutPanel1.Controls.Add(this.BtnMousePosition);
             this.flowLayoutPanel1.Controls.Add(this.BtnMouseMove);
+            this.flowLayoutPanel1.Controls.Add(this.BtnMouseScroll);
             this.flowLayoutPanel1.Controls.Add(this.BtnMouseClickLeft);
             this.flowLayoutPanel1.Controls.Add(this.BtnMouseClickMiddle);
             this.flowLayoutPanel1.Controls.Add(this.BtnMouseClickRight);
@@ -671,6 +674,7 @@
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel5);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel6);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel7);
+            this.flowLayoutPanel1.Controls.Add(this.BtnStartAgain);
             this.flowLayoutPanel1.Controls.Add(this.BtnWindowPositionMonitor);
             this.flowLayoutPanel1.Controls.Add(this.BtnWindowPosition);
             this.flowLayoutPanel1.Controls.Add(this.BtnWindowSize);
@@ -688,7 +692,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel9.Controls.Add(this.BtnCopy);
             this.flowLayoutPanel9.Controls.Add(this.BtnTypeText);
-            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 292);
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 332);
             this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
             this.flowLayoutPanel9.Size = new System.Drawing.Size(249, 24);
@@ -736,7 +740,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel8.Controls.Add(this.BtnPaste);
             this.flowLayoutPanel8.Controls.Add(this.BtnPasteText);
-            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 322);
+            this.flowLayoutPanel8.Location = new System.Drawing.Point(3, 362);
             this.flowLayoutPanel8.Name = "flowLayoutPanel8";
             this.flowLayoutPanel8.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel8.TabIndex = 67;
@@ -783,7 +787,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel2.Controls.Add(this.BtnKey1);
             this.flowLayoutPanel2.Controls.Add(this.TxtKey1);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 392);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 432);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel2.TabIndex = 66;
@@ -794,7 +798,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel3.Controls.Add(this.BtnKey2);
             this.flowLayoutPanel3.Controls.Add(this.TxtKey2);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 422);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 462);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel3.TabIndex = 67;
@@ -805,7 +809,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel4.Controls.Add(this.BtnKey3);
             this.flowLayoutPanel4.Controls.Add(this.TxtKey3);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 452);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 492);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel4.TabIndex = 68;
@@ -816,7 +820,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel10.Controls.Add(this.BtnDelay);
             this.flowLayoutPanel10.Controls.Add(this.BtnPause);
-            this.flowLayoutPanel10.Location = new System.Drawing.Point(3, 492);
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(3, 532);
             this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.flowLayoutPanel10.Name = "flowLayoutPanel10";
             this.flowLayoutPanel10.Size = new System.Drawing.Size(249, 24);
@@ -846,7 +850,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel5.Controls.Add(this.BtnDelay1);
             this.flowLayoutPanel5.Controls.Add(this.TxtDelay1);
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 522);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(3, 562);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel5.TabIndex = 68;
@@ -857,7 +861,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel6.Controls.Add(this.BtnDelay2);
             this.flowLayoutPanel6.Controls.Add(this.TxtDelay2);
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 552);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(3, 592);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             this.flowLayoutPanel6.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel6.TabIndex = 69;
@@ -868,7 +872,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel7.Controls.Add(this.BtnDelay3);
             this.flowLayoutPanel7.Controls.Add(this.TxtDelay3);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 582);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 622);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(249, 24);
             this.flowLayoutPanel7.TabIndex = 69;
@@ -880,7 +884,7 @@
             this.BtnWindowPositionMonitor.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnWindowPositionMonitor.Image = ((System.Drawing.Image)(resources.GetObject("BtnWindowPositionMonitor.Image")));
             this.BtnWindowPositionMonitor.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnWindowPositionMonitor.Location = new System.Drawing.Point(3, 622);
+            this.BtnWindowPositionMonitor.Location = new System.Drawing.Point(3, 702);
             this.BtnWindowPositionMonitor.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
             this.BtnWindowPositionMonitor.Name = "BtnWindowPositionMonitor";
             this.BtnWindowPositionMonitor.Size = new System.Drawing.Size(249, 24);
@@ -898,7 +902,7 @@
             this.BtnWindowPosition.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnWindowPosition.Image = ((System.Drawing.Image)(resources.GetObject("BtnWindowPosition.Image")));
             this.BtnWindowPosition.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnWindowPosition.Location = new System.Drawing.Point(3, 652);
+            this.BtnWindowPosition.Location = new System.Drawing.Point(3, 732);
             this.BtnWindowPosition.Name = "BtnWindowPosition";
             this.BtnWindowPosition.Size = new System.Drawing.Size(249, 24);
             this.BtnWindowPosition.TabIndex = 71;
@@ -915,7 +919,7 @@
             this.BtnWindowSize.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnWindowSize.Image = ((System.Drawing.Image)(resources.GetObject("BtnWindowSize.Image")));
             this.BtnWindowSize.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnWindowSize.Location = new System.Drawing.Point(3, 682);
+            this.BtnWindowSize.Location = new System.Drawing.Point(3, 762);
             this.BtnWindowSize.Name = "BtnWindowSize";
             this.BtnWindowSize.Size = new System.Drawing.Size(249, 24);
             this.BtnWindowSize.TabIndex = 72;
@@ -932,7 +936,7 @@
             this.BtnActivateWindow.Font = new System.Drawing.Font("Consolas", 9F);
             this.BtnActivateWindow.Image = ((System.Drawing.Image)(resources.GetObject("BtnActivateWindow.Image")));
             this.BtnActivateWindow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnActivateWindow.Location = new System.Drawing.Point(3, 712);
+            this.BtnActivateWindow.Location = new System.Drawing.Point(3, 792);
             this.BtnActivateWindow.Margin = new System.Windows.Forms.Padding(3, 3, 3, 25);
             this.BtnActivateWindow.Name = "BtnActivateWindow";
             this.BtnActivateWindow.Size = new System.Drawing.Size(249, 24);
@@ -942,6 +946,42 @@
             this.BtnActivateWindow.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.BtnActivateWindow.UseVisualStyleBackColor = true;
             this.BtnActivateWindow.Click += new System.EventHandler(this.BtnActivateWindow_Click);
+            // 
+            // BtnMouseScroll
+            // 
+            this.BtnMouseScroll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnMouseScroll.Font = new System.Drawing.Font("Consolas", 9F);
+            this.BtnMouseScroll.Image = ((System.Drawing.Image)(resources.GetObject("BtnMouseScroll.Image")));
+            this.BtnMouseScroll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnMouseScroll.Location = new System.Drawing.Point(3, 122);
+            this.BtnMouseScroll.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
+            this.BtnMouseScroll.Name = "BtnMouseScroll";
+            this.BtnMouseScroll.Size = new System.Drawing.Size(249, 24);
+            this.BtnMouseScroll.TabIndex = 74;
+            this.BtnMouseScroll.Text = "MouseScroll()";
+            this.BtnMouseScroll.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnMouseScroll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BtnMouseScroll.UseVisualStyleBackColor = true;
+            this.BtnMouseScroll.Click += new System.EventHandler(this.BtnMouseScroll_Click);
+            // 
+            // BtnStartAgain
+            // 
+            this.BtnStartAgain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnStartAgain.Font = new System.Drawing.Font("Consolas", 9F);
+            this.BtnStartAgain.Image = ((System.Drawing.Image)(resources.GetObject("BtnStartAgain.Image")));
+            this.BtnStartAgain.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnStartAgain.Location = new System.Drawing.Point(3, 662);
+            this.BtnStartAgain.Margin = new System.Windows.Forms.Padding(3, 13, 3, 3);
+            this.BtnStartAgain.Name = "BtnStartAgain";
+            this.BtnStartAgain.Size = new System.Drawing.Size(249, 24);
+            this.BtnStartAgain.TabIndex = 75;
+            this.BtnStartAgain.Text = "StartAgain()";
+            this.BtnStartAgain.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnStartAgain.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BtnStartAgain.UseVisualStyleBackColor = true;
+            this.BtnStartAgain.Click += new System.EventHandler(this.BtnStartAgain_Click);
             // 
             // FormAddHotkey
             // 
@@ -1057,5 +1097,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
         private System.Windows.Forms.Button BtnPause;
         private System.Windows.Forms.Button BtnActivateWindow;
+        private System.Windows.Forms.Button BtnMouseScroll;
+        private System.Windows.Forms.Button BtnStartAgain;
     }
 }

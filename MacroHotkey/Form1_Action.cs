@@ -159,6 +159,10 @@ namespace MacroHotkey
 
             switch (command)
             {
+                case "startagain":
+                    ActionStartAgain();
+                    break;
+
                 case "pause":
                     ActionPause(false);
                     break;
@@ -203,6 +207,10 @@ namespace MacroHotkey
                     ActionMouseMove(value);
                     break;
 
+                case "mousescroll":
+                    ActionMouseScroll(value);
+                    break;
+
                 case "mouseposition":
                     ActionMousePosition(value);
                     break;
@@ -223,6 +231,13 @@ namespace MacroHotkey
                     MacroRowCompleted();
                     break;
             }
+        }
+
+        private void ActionStartAgain()
+        {
+            macroRow = -1;
+            notification.ResetProgress();
+            MacroRowCompleted();
         }
 
         private void ActionPause(bool manualPause)
@@ -403,6 +418,18 @@ namespace MacroHotkey
 
                 Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
                 Cursor.Position = new Point(Cursor.Position.X + x, Cursor.Position.Y + y);
+            }
+            catch { }
+
+            MacroRowCompleted();
+        }
+
+        private void ActionMouseScroll(string value)
+        {
+            try
+            {
+                int amount = int.Parse(value);
+                DoMouseScroll(amount);
             }
             catch { }
 

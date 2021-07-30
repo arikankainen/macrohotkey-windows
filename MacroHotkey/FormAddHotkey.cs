@@ -321,6 +321,11 @@ namespace MacroHotkey
             AddText("MouseMove()", 1);
         }
 
+        private void BtnMouseScroll_Click(object sender, EventArgs e)
+        {
+            AddText("MouseScroll()", 1);
+        }
+
         private void BtnMouseClickLeft_Click(object sender, EventArgs e)
         {
             AddText("MouseClick(Left)");
@@ -460,6 +465,11 @@ namespace MacroHotkey
         private void BtnDelay3_Click(object sender, EventArgs e)
         {
             AddText("Delay(" + TxtDelay3.Text + ")");
+        }
+
+        private void BtnStartAgain_Click(object sender, EventArgs e)
+        {
+            AddText("StartAgain()");
         }
 
         private void TxtKey1_TextChanged(object sender, EventArgs e)
